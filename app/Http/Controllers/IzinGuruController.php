@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
-class DashboardController extends Controller
+class IzinGuruController extends Controller
 {
     //
     public function index()
@@ -16,6 +15,6 @@ class DashboardController extends Controller
             $siswa = User::where('role_id', 3)->get();
             // dd($siswa);
         }
-        return view('dashboard');
+        return view('admin.izinGuru.index');
     }
 }
