@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/izin-guru', [IzinGuruController::class, 'index'])->name('izin-guru.index');
     Route::get('/izin-siswa', [IzinSiswaController::class, 'index'])->name('izin-siswa.index');
+    Route::get('/izin-siswa/create', [IzinSiswaController::class, 'create'])->name('izin-siswa.create');
+    Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
 });
 
 require __DIR__.'/auth.php';

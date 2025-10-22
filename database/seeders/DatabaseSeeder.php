@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Kelas;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,7 @@ class DatabaseSeeder extends Seeder
         Role::create([
             'id' => 1,
             'name' => 'Superadmin',
-        ]);        
+        ]);
         Role::create([
             'id' => 2,
             'name' => 'Guru',
@@ -26,6 +27,10 @@ class DatabaseSeeder extends Seeder
         Role::create([
             'id' => 3,
             'name' => 'Siswa',
+        ]);
+        Kelas::create([
+            'id' => 1,
+            'name' => 'X-A',
         ]);
         User::factory()->create([
             'name' => 'Super Admin 1',
@@ -43,8 +48,22 @@ class DatabaseSeeder extends Seeder
             'name' => 'Guru 1',
             'email' => 'guru1@gmail.com',
             'password' => bcrypt('123123123'),
-            'role_id' => 3,
+            'isAdminPiket' => 1,
+            'role_id' => 2,
         ]);
-       
+        User::factory()->create([
+            'name' => 'Guru 2',
+            'email' => 'guru2@gmail.com',
+            'password' => bcrypt('123123123'),
+            'isWaliKelas' => 1,
+            'role_id' => 2,
+        ]);
+        User::factory()->create([
+            'name' => 'Siswa 1',
+            'email' => 'siswa1@gmail.com',
+            'password' => bcrypt('123123123'),
+            'role_id' => 3,
+            'kelas_id' => 1,
+        ]);
     }
 }

@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id')->nullable();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
+            
+            
             $table->smallInteger('isAdminPiket')->default(0);
             $table->smallInteger('isWaliKelas')->default(0);
+            
+            
             $table->rememberToken();
             $table->timestamps();
         });

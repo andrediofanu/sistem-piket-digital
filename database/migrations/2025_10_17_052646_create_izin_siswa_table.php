@@ -13,18 +13,22 @@ return new class extends Migration
     {
         Schema::create('izin_siswa', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('waktu_izin');
+            $table->dateTime('tanggal_izin');
             $table->unsignedBigInteger('kelas_id')->nullable();
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('set null');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->string('jenis_izin');
             $table->string('status_ketidakhadiran');
             $table->string('keterangan');
-            $table->smallInteger('status')->default(0);
+            
+            $table->smallInteger('jam_mulai');
+            $table->smallInteger('jam_selesai');
             $table->unsignedBigInteger('wali_kelas_id')->nullable();
             $table->foreign('wali_kelas_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('admin_piket_id')->nullable();
             $table->foreign('admin_piket_id')->references('id')->on('users')->onDelete('set null');
+            $table->smallInteger('status')->default(0);
             $table->timestamps();
         });
     }

@@ -33,9 +33,15 @@
     <!-- Fonts and Icons (e.g., Font Awesome, Google Fonts) -->
     <!-- Example: If you use Google Fonts, include it here -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  
+    <!-- 2. Load Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
     
+
     <!-- Example: Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -754,8 +760,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
     <script>
         /**
@@ -765,21 +773,21 @@
             // Target the input field
             const input = document.getElementById("searchInput");
             const filter = input.value.toUpperCase();
-            
+
             // Target the menu container (searchableSelectMenu)
             const ul = document.getElementById("searchableSelectMenu");
-            
+
             // Get all 'a' elements (the actual dropdown items)
             const items = ul.querySelectorAll("li > a.dropdown-item");
 
             // Loop through all dropdown items, and hide those that don't match the search query
             items.forEach(item => {
                 const txtValue = item.textContent || item.innerText;
-                
+
                 // If the item text includes the filter text
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     // Show the item's <li> parent
-                    item.closest('li').style.display = ""; 
+                    item.closest('li').style.display = "";
                 } else {
                     // Hide the item's <li> parent
                     item.closest('li').style.display = "none";
@@ -790,19 +798,19 @@
         /**
          * Handles item selection: updates the button text and closes the dropdown.
          */
-        document.getElementById('searchableSelectMenu').addEventListener('click', function(event) {
+        document.getElementById('searchableSelectMenu').addEventListener('click', function (event) {
             const target = event.target;
-            
+
             // 1. Check if the clicked element is an actual dropdown item (<a> tag)
             if (target.tagName === 'A' && target.classList.contains('dropdown-item')) {
                 // Prevent the default link action
-                event.preventDefault(); 
-                
+                event.preventDefault();
+
                 const selectedText = target.textContent;
-                
+
                 // Update the visible display text on the button
                 document.getElementById('selectedDisplay').textContent = selectedText;
-                
+
                 // Manually hide the dropdown
                 const dropdownElement = document.getElementById('searchableSelectButton');
                 // Use the Bootstrap instance to hide the dropdown
@@ -815,16 +823,77 @@
                 document.getElementById('searchInput').value = '';
                 filterFunction();
             }
-            
+
             // Stop propagation when clicking on the search input or its container to keep the dropdown open
             if (target.id === 'searchInput' || target.closest('.dropdown-search-container')) {
                 event.stopPropagation();
             }
         });
-        
+
         // This ensures the search input is focused when the dropdown is opened, making it keyboard-ready
         document.getElementById('searchableSelectButton').addEventListener('shown.bs.dropdown', function () {
             document.getElementById('searchInput').focus();
+        });
+    </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- 4. Load jQuery (required by bootstrap-datepicker) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- 5. Load Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Datepicker Initialization Script (Must run after all libraries are loaded) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const datepickerInput = $('#datepickerInput');
+            const datepickerIcon = document.getElementById('datepickerIcon');
+            const submitBtn = document.getElementById('submitBtn');
+            const messageBox = document.getElementById('messageBox');
+
+            // Function to display messages
+            function showMessage(text, isError = false) {
+                messageBox.classList.remove('d-none', 'text-success', 'text-danger');
+                messageBox.classList.add(isError ? 'text-danger' : 'text-success');
+                messageBox.textContent = text;
+                messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
+                messageBox.style.color = isError ? '#721c24' : '#155724';
+                
+                setTimeout(() => {
+                    messageBox.classList.add('d-none');
+                }, 5000);
+            }
+
+            // 1. Initialize the Date Picker
+            datepickerInput.datepicker({
+                format: 'dd/mm/yyyy', 
+                autoclose: true,       
+                todayHighlight: true,  
+                startDate: 'today'     
+            });
+
+            // 2. Add functionality to the calendar icon
+            datepickerIcon.addEventListener('click', () => {
+                datepickerInput.datepicker('show');
+            });
+
+            // 3. Handle the submission
+            submitBtn.addEventListener('click', () => {
+                const selectedDate = datepickerInput.val();
+                
+                if (selectedDate) {
+                    // Collect other form data here for actual submission
+                    const keterangan = document.getElementById('textareaKeterangan').value;
+                    const jenisIzin = document.getElementById('selectJenisIzin').value;
+                    
+                    showMessage(`Data Izin untuk ${selectedDate} telah ditambahkan. Jenis Izin: ${jenisIzin}.`, false);
+                } else {
+                    showMessage("Harap pilih tanggal untuk Izin (Please select a date for the Permit)!", true);
+                }
+            });
+
+             // Update IDs for better consistency (Note: I changed select IDs in the HTML form too)
+             // document.getElementById('exampleFormControlSelect1').id = 'selectKelas';
         });
     </script>
 </body>
