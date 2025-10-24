@@ -28,7 +28,8 @@ return new class extends Migration
             $table->foreign('wali_kelas_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('admin_piket_id')->nullable();
             $table->foreign('admin_piket_id')->references('id')->on('users')->onDelete('set null');
-            $table->smallInteger('status')->default(0);
+            $table->unsignedBigInteger('status_id')->default(1)->nullable();
+            $table->foreign('status_id')->references('id')->on('status_izin_siswa')->onDelete('set null');
             $table->timestamps();
         });
     }

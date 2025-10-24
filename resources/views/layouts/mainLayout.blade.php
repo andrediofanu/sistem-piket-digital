@@ -33,14 +33,18 @@
     <!-- Fonts and Icons (e.g., Font Awesome, Google Fonts) -->
     <!-- Example: If you use Google Fonts, include it here -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  
-    <!-- 2. Load Bootstrap Datepicker CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
-    
+    <!-- 2. Load Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 
     <!-- Example: Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
 
 
 </head>
@@ -263,7 +267,7 @@
                                 </g>
                             </svg>
                         </div>
-                        <span class="nav-link-text ms-1">Sign In</span>
+                        <span class="nav-link-text ms-1">Sign Out</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -351,10 +355,13 @@
                                 Builder</a>
                         </li>
                         <li class="nav-item d-flex align-items-center">
-                            <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa fa-user me-sm-1"></i>
-                                <span class="d-sm-inline d-none">Sign In</span>
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-danger btn-sm mb-0 me-3">
+                                    <i class="fa fa-user me-sm-1"></i>
+                                    <span class="d-sm-inline d-none">Sign Out</span>
+                                </button>
+                            </form>
                         </li>
                         <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -835,13 +842,16 @@
             document.getElementById('searchInput').focus();
         });
     </script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
     <!-- 4. Load jQuery (required by bootstrap-datepicker) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
+
     <!-- 5. Load Bootstrap Datepicker JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
 
     <!-- Datepicker Initialization Script (Must run after all libraries are loaded) -->
     <script>
@@ -858,7 +868,7 @@
                 messageBox.textContent = text;
                 messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
                 messageBox.style.color = isError ? '#721c24' : '#155724';
-                
+
                 setTimeout(() => {
                     messageBox.classList.add('d-none');
                 }, 5000);
@@ -866,10 +876,10 @@
 
             // 1. Initialize the Date Picker
             datepickerInput.datepicker({
-                format: 'dd/mm/yyyy', 
-                autoclose: true,       
-                todayHighlight: true,  
-                startDate: 'today'     
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                startDate: 'today'
             });
 
             // 2. Add functionality to the calendar icon
@@ -880,20 +890,20 @@
             // 3. Handle the submission
             submitBtn.addEventListener('click', () => {
                 const selectedDate = datepickerInput.val();
-                
+
                 if (selectedDate) {
                     // Collect other form data here for actual submission
                     const keterangan = document.getElementById('textareaKeterangan').value;
                     const jenisIzin = document.getElementById('selectJenisIzin').value;
-                    
+
                     showMessage(`Data Izin untuk ${selectedDate} telah ditambahkan. Jenis Izin: ${jenisIzin}.`, false);
                 } else {
                     showMessage("Harap pilih tanggal untuk Izin (Please select a date for the Permit)!", true);
                 }
             });
 
-             // Update IDs for better consistency (Note: I changed select IDs in the HTML form too)
-             // document.getElementById('exampleFormControlSelect1').id = 'selectKelas';
+            // Update IDs for better consistency (Note: I changed select IDs in the HTML form too)
+            // document.getElementById('exampleFormControlSelect1').id = 'selectKelas';
         });
     </script>
 </body>

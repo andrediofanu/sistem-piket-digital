@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\StatusIzinSiswa;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Kelas;
@@ -31,6 +32,23 @@ class DatabaseSeeder extends Seeder
         Kelas::create([
             'id' => 1,
             'name' => 'X-A',
+            'wali_kelas_id' => 4
+        ]);
+        StatusIzinSiswa::create([
+            'id' => 1,
+            'name' => 'Menunggu Persetujuan Wali Kelas',
+        ]);
+        StatusIzinSiswa::create([
+            'id' => 2,
+            'name' => 'Menunggu Persetujuan Admin Piket',
+        ]);
+        StatusIzinSiswa::create([
+            'id' => 3,
+            'name' => 'Pengajuan Selesai',
+        ]);
+        StatusIzinSiswa::create([
+            'id' => 4,
+            'name' => 'Pengajuan Ditolak',
         ]);
         User::factory()->create([
             'name' => 'Super Admin 1',
@@ -42,6 +60,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin 1',
             'email' => 'admin1@gmail.com',
             'password' => bcrypt('123123123'),
+            'isAdminPiket' => 1,
             'role_id' => 2,
         ]);
         User::factory()->create([

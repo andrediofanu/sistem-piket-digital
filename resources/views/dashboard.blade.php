@@ -7,10 +7,10 @@
         <div class="row">
           <div class="col-8">
             <div class="numbers">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Money</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Menunggu Persetujuan Piket</p>
               <h5 class="font-weight-bolder mb-0">
-                $53,000
-                <span class="text-success text-sm font-weight-bolder">+55%</span>
+                {{$countStatus2}}
+                <!-- <span class="text-success text-sm font-weight-bolder">+55%</span> -->
               </h5>
             </div>
           </div>
@@ -29,10 +29,10 @@
         <div class="row">
           <div class="col-8">
             <div class="numbers">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Today's Users</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Menunggu Persetujuan PA</p>
               <h5 class="font-weight-bolder mb-0">
-                2,300
-                <span class="text-success text-sm font-weight-bolder">+3%</span>
+                {{$countStatus1}}
+                <!-- <span class="text-success text-sm font-weight-bolder">+3%</span> -->
               </h5>
             </div>
           </div>
@@ -51,10 +51,10 @@
         <div class="row">
           <div class="col-8">
             <div class="numbers">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">New Clients</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Siswa Izin Hari Ini</p>
               <h5 class="font-weight-bolder mb-0">
-                +3,462
-                <span class="text-danger text-sm font-weight-bolder">-2%</span>
+                {{ $todayCount }}
+                <!-- <span class="text-danger text-sm font-weight-bolder">-2%</span> -->
               </h5>
             </div>
           </div>
@@ -73,7 +73,7 @@
         <div class="row">
           <div class="col-8">
             <div class="numbers">
-              <p class="text-sm mb-0 text-capitalize font-weight-bold">Sales</p>
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Jumlah Guru Izin Hari Ini</p>
               <h5 class="font-weight-bolder mb-0">
                 $103,430
                 <span class="text-success text-sm font-weight-bolder">+5%</span>

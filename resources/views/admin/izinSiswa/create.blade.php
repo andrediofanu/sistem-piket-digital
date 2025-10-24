@@ -11,34 +11,49 @@
           <form action="{{ route('izin-siswa.store') }}" method="POST">
             @csrf
             <div class="row">
-              <div class="form-group col-lg-4">
-                <label for="tanggal_izin">Tanggal Izin</label>
-                <div class="input-group">
-                  <input type="date" name="tanggal_izin" class="form-control" id="tanggal_izin"
-                    value="{{ old('tanggal_izin', now()->toDateString()) }}">
+              <div class="form-group">
+                <div class="col-lg-2">
+                  <label for="tanggal_izin">Tanggal Izin</label>
+                  <div class="input-group">
+                    <input type="date" name="tanggal_izin" class="form-control" id="tanggal_izin"
+                      value="{{ old('tanggal_izin', now()->toDateString()) }}">
+                  </div>
+                  @error('tanggal_izin') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
-                @error('tanggal_izin') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
               <div class="form-group col-lg-4">
-                <label for="jam_mulai">Mulai jam KBM ke-</label>
-                <select name="jam_mulai" class="form-control" id="jam_mulai">
-                  <option value="">Pilih</option>
-                  @for($i = 1; $i <= 11; $i++)
-                    <option value="{{ $i }}" {{ old('jam_mulai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
-                  @endfor
+                <label for="jenis_izin">Jenis Izin</label>
+                <select name="jenis_izin" class="form-control" id="jenis_izin">
+                  <option value="">Pilih jenis</option>
+                  <option value="1" {{ old('jenis_izin') == '1' ? 'selected' : '' }}>Masuk Kelas (Terlambat)</option>
+                  <option value="2" {{ old('jenis_izin') == '2' ? 'selected' : '' }}>Meninggalkan Kelas</option>
+                  <option value="3" {{ old('jenis_izin') == '3' ? 'selected' : '' }}>Tidak Masuk Madrasah</option>
                 </select>
-                @error('jam_mulai') <div class="text-danger small">{{ $message }}</div> @enderror
+                @error('jenis_izin') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
+              <div id="jam-group">
 
-              <div class="form-group col-lg-4">
-                <label for="jam_selesai">Sampai jam KBM ke-</label>
-                <select name="jam_selesai" class="form-control" id="jam_selesai">
-                  <option value="">Pilih</option>
-                  @for($i = 1; $i <= 11; $i++)
-                    <option value="{{ $i }}" {{ old('jam_selesai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
-                  @endfor
-                </select>
-                @error('jam_selesai') <div class="text-danger small">{{ $message }}</div> @enderror
+                <div class="form-group col-lg-4">
+                  <label for="jam_mulai">Mulai jam KBM ke-</label>
+                  <select name="jam_mulai" class="form-control" id="jam_mulai">
+                    <option value="">Pilih</option>
+                    @for($i = 1; $i <= 11; $i++)
+                      <option value="{{ $i }}" {{ old('jam_mulai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
+                    @endfor
+                  </select>
+                  @error('jam_mulai') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+  
+                <div class="form-group col-lg-4">
+                  <label for="jam_selesai">Sampai jam KBM ke-</label>
+                  <select name="jam_selesai" class="form-control" id="jam_selesai">
+                    <option value="">Pilih</option>
+                    @for($i = 1; $i <= 11; $i++)
+                      <option value="{{ $i }}" {{ old('jam_selesai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
+                    @endfor
+                  </select>
+                  @error('jam_selesai') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
               </div>
 
             </div>
@@ -70,16 +85,7 @@
               @error('user_id') <div class="text-danger small">{{ $message }}</div> @enderror
             </div>
 
-            <div class="form-group">
-              <label for="jenis_izin">Jenis Izin</label>
-              <select name="jenis_izin" class="form-control" id="jenis_izin">
-                <option value="">Pilih jenis</option>
-                <option value="1" {{ old('jenis_izin') == '1' ? 'selected' : '' }}>Izin Masuk Kelas (Terlambat)</option>
-                <option value="2" {{ old('jenis_izin') == '2' ? 'selected' : '' }}>Izin Meninggalkan Kelas</option>
-                <option value="3" {{ old('jenis_izin') == '3' ? 'selected' : '' }}>Izin Tidak Masuk Madrasah</option>
-              </select>
-              @error('jenis_izin') <div class="text-danger small">{{ $message }}</div> @enderror
-            </div>
+
 
             <div id="status_ketidakhadiran-group" class="form-group {{ old('jenis_izin') == '3' ? '' : 'd-none' }}">
               <label for="status_ketidakhadiran">Status Ketidakhadiran</label>
@@ -104,22 +110,31 @@
           <script>
             document.addEventListener('DOMContentLoaded', function () {
               const jenis = document.getElementById('jenis_izin');
-              const statusGroup = document.getElementById('status-group');
+              const statusGroup = document.getElementById('status_ketidakhadiran-group');
+              const jamGroup = document.getElementById('jam-group') // corrected id
 
               function toggleStatus() {
                 if (!jenis || !statusGroup) return;
                 if (jenis.value === '3') {
                   statusGroup.classList.remove('d-none');
-                } else {
+                } else if(jenis.value)
+                else {
                   statusGroup.classList.add('d-none');
-                  // clear selection when hidden (optional)
-                  statusGroup.querySelectorAll('select, input').forEach(el => el.value = '');
+                  statusGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
                 }
+
+                // if (jenis.value === '2') {
+                //   jamGroup.classList.remove('d-none');
+                // } else if(jenis.value)
+                // else {
+                //   jamGroup.classList.add('d-none');
+                //   jamGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                // }
               }
 
               if (jenis) {
                 jenis.addEventListener('change', toggleStatus);
-                toggleStatus(); // initial based on old() or current value
+                toggleStatus();
               }
             });
           </script>
@@ -142,10 +157,14 @@
         </div>
         <div class="col-lg-6">
           <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-            <li class="nav-item"><a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a></li>
-            <li class="nav-item"><a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a></li>
-            <li class="nav-item"><a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a></li>
-            <li class="nav-item"><a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a></li>
+            <li class="nav-item"><a href="https://www.creative-tim.com" class="nav-link text-muted"
+                target="_blank">Creative Tim</a></li>
+            <li class="nav-item"><a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
+                target="_blank">About Us</a></li>
+            <li class="nav-item"><a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
+                target="_blank">Blog</a></li>
+            <li class="nav-item"><a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                target="_blank">License</a></li>
           </ul>
         </div>
       </div>

@@ -6,9 +6,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IzinGuruController;
 use App\Http\Controllers\IzinSiswaController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/izin-siswa', [IzinSiswaController::class, 'index'])->name('izin-siswa.index');
     Route::get('/izin-siswa/create', [IzinSiswaController::class, 'create'])->name('izin-siswa.create');
     Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
+    Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
+        ->name('izin-siswa.update_status');
 });
 
 require __DIR__.'/auth.php';

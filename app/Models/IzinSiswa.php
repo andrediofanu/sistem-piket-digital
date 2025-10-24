@@ -22,6 +22,9 @@ class IzinSiswa extends Model
         'jam_mulai',
         'jam_selesai',           // renamed field used by form/controller
         'keterangan',
+        'admin_piket_id',
+        'wali_kelas_id',
+        'status_id',             // added
     ];
 
     protected $casts = [
@@ -41,6 +44,18 @@ class IzinSiswa extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+    public function adminPiket()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'admin_piket_id');
+    }
+    public function waliKelas()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'wali_kelas_id');
+    }
+    public function statusIzinSiswa()
+    {
+        return $this->belongsTo(\App\Models\StatusIzinSiswa::class, 'status_id');
     }
 }
 
