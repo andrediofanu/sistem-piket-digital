@@ -46,7 +46,25 @@ class User extends Authenticatable
         ];
     }
     public function role()
-{
-    return $this->belongsTo(Role::class, 'role_id'); // adjust foreign key if needed
-}
+    {
+        return $this->belongsTo(Role::class, 'role_id'); // adjust foreign key if needed
+    }
+    // public function profile()
+    // {
+    //     return $this->hasOne(Profile::class);
+    // }
+
+    // protected static function booted()
+    // {
+    //     static::created(function ($user) {
+    //         // Automatically create profile
+    //         $user->profile()->create([
+    //             'alamat' => null,
+    //             'telepon' => null,
+    //             'jabatan' => $user->role === 'Guru' ? 'Guru' : null,
+    //             'kelas_id' => $user->role === 'Siswa' ? null : null, // adjust if you have kelas table
+    //             'tanggal_lahir' => null,
+    //         ]);
+    //     });
+    // }
 }

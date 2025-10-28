@@ -18,7 +18,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Soft UI Dashboard by Creative Tim</title>
+    <title>Piket M1KM</title>
 
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -59,7 +59,7 @@
             <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html "
                 target="_blank">
                 <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
-                <span class="ms-1 font-weight-bold">Soft UI Dashboard</span>
+                <span class="ms-1 font-weight-bold">PIKET M1KM</span>
             </a>
         </div>
         <hr class="horizontal dark mt-0">
@@ -92,6 +92,9 @@
                         </div>
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Admin Piket</h6>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('izin-guru.index') ? 'active bg-white shadow-soft-xs' : '' }}"

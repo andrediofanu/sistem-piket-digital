@@ -11,8 +11,8 @@
           <form action="{{ route('izin-siswa.store') }}" method="POST">
             @csrf
             <div class="row">
-              <div class="form-group">
-                <div class="col-lg-2">
+              <div class="form-group col-lg-4">
+                <div class="">
                   <label for="tanggal_izin">Tanggal Izin</label>
                   <div class="input-group">
                     <input type="date" name="tanggal_izin" class="form-control" id="tanggal_izin"
@@ -31,30 +31,41 @@
                 </select>
                 @error('jenis_izin') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
-              <div id="jam-group">
-
-                <div class="form-group col-lg-4">
-                  <label for="jam_mulai">Mulai jam KBM ke-</label>
-                  <select name="jam_mulai" class="form-control" id="jam_mulai">
-                    <option value="">Pilih</option>
-                    @for($i = 1; $i <= 11; $i++)
-                      <option value="{{ $i }}" {{ old('jam_mulai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
-                    @endfor
-                  </select>
-                  @error('jam_mulai') <div class="text-danger small">{{ $message }}</div> @enderror
-                </div>
-  
-                <div class="form-group col-lg-4">
-                  <label for="jam_selesai">Sampai jam KBM ke-</label>
-                  <select name="jam_selesai" class="form-control" id="jam_selesai">
-                    <option value="">Pilih</option>
-                    @for($i = 1; $i <= 11; $i++)
-                      <option value="{{ $i }}" {{ old('jam_selesai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
-                    @endfor
-                  </select>
-                  @error('jam_selesai') <div class="text-danger small">{{ $message }}</div> @enderror
-                </div>
+              <div id="status_ketidakhadiran-group"
+                class="form-group {{ old('jenis_izin') == '3' ? '' : 'd-none' }} col-lg-4">
+                <label for="status_ketidakhadiran">Status Ketidakhadiran</label>
+                <select class="form-control" id="status_ketidakhadiran" name="status_ketidakhadiran">
+                  <option value="">Pilih status ketidakhadiran</option>
+                  <option value="1" {{ old('status_ketidakhadiran') == '1' ? 'selected' : '' }}>Sakit</option>
+                  <option value="2" {{ old('status_ketidakhadiran') == '2' ? 'selected' : '' }}>Izin</option>
+                  <option value="3" {{ old('status_ketidakhadiran') == '3' ? 'selected' : '' }}>Alpha</option>
+                </select>
+                @error('status_ketidakhadiran') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
+
+
+              <div id="jam_mulai_group" class="form-group col-lg-2">
+                <label for="jam_mulai">Mulai jam KBM ke-</label>
+                <select name="jam_mulai" class="form-control" id="jam_mulai">
+                  <option value="">Pilih</option>
+                  @for($i = 1; $i <= 11; $i++)
+                    <option value="{{ $i }}" {{ old('jam_mulai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
+                  @endfor
+                </select>
+                @error('jam_mulai') <div class="text-danger small">{{ $message }}</div> @enderror
+              </div>
+
+              <div id="jam_selesai_group" class="form-group col-lg-2">
+                <label for="jam_selesai">Sampai jam KBM ke-</label>
+                <select name="jam_selesai" class="form-control" id="jam_selesai">
+                  <option value="">Pilih</option>
+                  @for($i = 1; $i <= 11; $i++)
+                    <option value="{{ $i }}" {{ old('jam_selesai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
+                  @endfor
+                </select>
+                @error('jam_selesai') <div class="text-danger small">{{ $message }}</div> @enderror
+              </div>
+
 
             </div>
 
@@ -76,27 +87,13 @@
               <label for="user_id">Nama</label>
               <select class="form-control" id="user_id" name="user_id">
                 <option value="">Pilih siswa</option>
-                @foreach($siswa as $u)
-                  <option value="{{ $u->id }}" {{ old('user_id') == $u->id ? 'selected' : '' }}>
-                    {{ $u->name }}
-                  </option>
-                @endforeach
               </select>
               @error('user_id') <div class="text-danger small">{{ $message }}</div> @enderror
             </div>
 
 
 
-            <div id="status_ketidakhadiran-group" class="form-group {{ old('jenis_izin') == '3' ? '' : 'd-none' }}">
-              <label for="status_ketidakhadiran">Status Ketidakhadiran</label>
-              <select class="form-control" id="status_ketidakhadiran" name="status_ketidakhadiran">
-                <option value="">Pilih status ketidakhadiran</option>
-                <option value="1" {{ old('status_ketidakhadiran') == '1' ? 'selected' : '' }}>Sakit</option>
-                <option value="2" {{ old('status_ketidakhadiran') == '2' ? 'selected' : '' }}>Izin</option>
-                <option value="3" {{ old('status_ketidakhadiran') == '3' ? 'selected' : '' }}>Alpha</option>
-              </select>
-              @error('status_ketidakhadiran') <div class="text-danger small">{{ $message }}</div> @enderror
-            </div>
+
 
             <div class="form-group">
               <label for="keterangan">Keterangan</label>
@@ -111,31 +108,79 @@
             document.addEventListener('DOMContentLoaded', function () {
               const jenis = document.getElementById('jenis_izin');
               const statusGroup = document.getElementById('status_ketidakhadiran-group');
-              const jamGroup = document.getElementById('jam-group') // corrected id
+              // New element constants
+              const jamGroup1 = document.getElementById('jam_mulai_group');
+              const jamGroup2 = document.getElementById('jam_selesai_group');
 
               function toggleStatus() {
-                if (!jenis || !statusGroup) return;
-                if (jenis.value === '3') {
+                // 1. Safety check for all elements
+                if (!jenis || !statusGroup || !jamGroup1 || !jamGroup2) return;
+
+                const jenisValue = jenis.value;
+
+                // --- 2. Logic for 'status_ketidakhadiran-group' ---
+                // The status group is shown ONLY if the value is '3'.
+                if (jenisValue === '3') {
                   statusGroup.classList.remove('d-none');
-                } else if(jenis.value)
-                else {
+                } else {
                   statusGroup.classList.add('d-none');
+                  // Clear values when hiding the group
                   statusGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
                 }
 
-                // if (jenis.value === '2') {
-                //   jamGroup.classList.remove('d-none');
-                // } else if(jenis.value)
-                // else {
-                //   jamGroup.classList.add('d-none');
-                //   jamGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
-                // }
+                // --- 3. Logic for 'jam_mulai_group' and 'jam_selesai_group' ---
+                // The jam groups are shown if the value is '1' OR '2'.
+                const shouldShowJamGroups = (jenisValue === '1' || jenisValue === '2');
+
+                if (shouldShowJamGroups) {
+                  jamGroup1.classList.remove('d-none');
+                  jamGroup2.classList.remove('d-none');
+                } else {
+                  jamGroup1.classList.add('d-none');
+                  jamGroup2.classList.add('d-none');
+                  // Optional: Clear values when hiding the groups
+                  jamGroup1.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                  jamGroup2.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                }
               }
 
               if (jenis) {
                 jenis.addEventListener('change', toggleStatus);
                 toggleStatus();
               }
+            });
+          </script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const kelasSelect = document.getElementById('kelas_id');
+              const siswaSelect = document.getElementById('user_id');
+
+              if (!kelasSelect || !siswaSelect) return;
+
+              kelasSelect.addEventListener('change', function () {
+                const kelasId = this.value;
+                siswaSelect.innerHTML = '<option value="">Memuat...</option>';
+
+                if (kelasId) {
+                  fetch(`/get-siswa-by-kelas/${kelasId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                      siswaSelect.innerHTML = '<option value="">Pilih siswa</option>';
+                      data.forEach(siswa => {
+                        const option = document.createElement('option');
+                        option.value = siswa.id;
+                        option.textContent = siswa.name;
+                        siswaSelect.appendChild(option);
+                      });
+                    })
+                    .catch(error => {
+                      console.error(error);
+                      siswaSelect.innerHTML = '<option value="">Gagal memuat siswa</option>';
+                    });
+                } else {
+                  siswaSelect.innerHTML = '<option value="">Pilih siswa</option>';
+                }
+              });
             });
           </script>
 

@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
     Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
         ->name('izin-siswa.update_status');
+    Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
