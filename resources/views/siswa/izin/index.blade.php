@@ -10,7 +10,7 @@
 
   <div class="row mb-3">
     <div class="col-12">
-      <a href="{{ route('izin-siswa.create') }}">
+      <a href="{{ route('siswa.izin.create') }}">
         <button type="button" class="btn btn-primary">+ Tambah Izin Siswa</button>
       </a>
     </div>

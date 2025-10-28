@@ -19,13 +19,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/izin-guru', [IzinGuruController::class, 'index'])->name('izin-guru.index');
-    Route::get('/izin-siswa', [IzinSiswaController::class, 'index'])->name('izin-siswa.index');
-    Route::get('/izin-siswa/create', [IzinSiswaController::class, 'create'])->name('izin-siswa.create');
-    Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
-    Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
-        ->name('izin-siswa.update_status');
-    Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
+
+    Route::prefix('admin-piket')->group(function () {
+        Route::get('/izin-guru', [IzinGuruController::class, 'index'])->name('izin-guru.index');
+        Route::get('/izin-siswa', [IzinSiswaController::class, 'index'])->name('izin-siswa.index');
+        Route::get('/izin-siswa/create', [IzinSiswaController::class, 'create'])->name('izin-siswa.create');
+        Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
+        Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
+            ->name('izin-siswa.update_status');
+        Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
+    });
+
+    Route::prefix('siswa')->group(function () {
+        Route::get('/izin', [IzinSiswaController::class, 'indexBySiswa'])->name('siswa.izin.index');
+        Route::get('/izin/create', [IzinSiswaController::class, 'createBySiswa'])->name('siswa.izin.create');
+        Route::post('/izin', [IzinSiswaController::class, 'storeBySiswa'])->name('siswa.izin.store');
+    });
+
+
 });
 
 require __DIR__ . '/auth.php';

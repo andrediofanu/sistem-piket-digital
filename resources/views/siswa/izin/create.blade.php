@@ -8,7 +8,7 @@
         </div>
         <div class="card-body px-4 pt-4 pb-2">
 
-          <form action="{{ route('izin-siswa.store') }}" method="POST">
+          <form action="{{ route('siswa.izin.store') }}" method="POST">
             @csrf
             <div class="row">
               <div class="form-group col-lg-4">
@@ -72,22 +72,27 @@
 
             <div class="form-group">
               <label for="kelas_id">Kelas</label>
-              <select class="form-control" id="kelas_id" name="kelas_id">
-                <option value="">Pilih kelas</option>
-                @foreach($kelas as $k)
-                  <option value="{{ $k->id }}" {{ old('kelas_id') == $k->id ? 'selected' : '' }}>
-                    {{ $k->nama_kelas ?? $k->name ?? $k->kelas ?? 'Kelas ' . $k->id }}
-                  </option>
-                @endforeach
-              </select>
+              @foreach($kelas as $k)
+                <!-- visible (user sees class name) -->
+                <input type="text" class="form-control mb-2"
+                  value="{{ $k->nama_kelas ?? $k->name ?? $k->kelas ?? 'Kelas ' . $k->id }}" disabled>
+
+                <!-- hidden (actual value submitted) -->
+                <input type="hidden" name="kelas_id" value="{{ $k->id }}">
+              @endforeach
               @error('kelas_id') <div class="text-danger small">{{ $message }}</div> @enderror
             </div>
 
+
             <div class="form-group">
               <label for="user_id">Nama</label>
-              <select class="form-control" id="user_id" name="user_id">
-                <option value="">Pilih siswa</option>
-              </select>
+              @foreach($siswa as $s)
+                <!-- visible (user sees name) -->
+                <input type="text" class="form-control mb-2" value="{{ $s->name ?? 'Siswa ' . $s->id }}" disabled>
+
+                <!-- hidden (actual value submitted) -->
+                <input type="hidden" name="user_id" value="{{ $s->id }}">
+              @endforeach
               @error('user_id') <div class="text-danger small">{{ $message }}</div> @enderror
             </div>
 
@@ -162,7 +167,7 @@
                 siswaSelect.innerHTML = '<option value="">Memuat...</option>';
 
                 if (kelasId) {
-                  fetch(`/admin-piket/get-siswa-by-kelas/${kelasId}`)
+                  fetch(`/get-siswa-by-kelas/${kelasId}`)
                     .then(response => response.json())
                     .then(data => {
                       siswaSelect.innerHTML = '<option value="">Pilih siswa</option>';
