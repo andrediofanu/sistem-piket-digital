@@ -56,9 +56,10 @@
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html "
+            <a class="navbar-brand m-0" href="{{ route('dashboard') }}"
                 target="_blank">
-                <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+                
+                <img src="{{ asset('assets/img/logo-ct-dark.png') }}" class="navbar-brand-img h-100" alt="main_logo">
                 <span class="ms-1 font-weight-bold">PIKET M1KM</span>
             </a>
         </div>
@@ -192,7 +193,7 @@
                 
                 @endif
                 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link  " href="../pages/virtual-reality.html">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -251,12 +252,13 @@
                         </div>
                         <span class="nav-link-text ms-1">RTL</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  " href="../pages/profile.html">
+                    <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active bg-white shadow-soft-xs' : '' }}"
+                        href="{{ route('profile.edit') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1"
@@ -285,7 +287,7 @@
                         <span class="nav-link-text ms-1">Profile</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link  " href="../pages/sign-in.html">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -344,10 +346,10 @@
                         </div>
                         <span class="nav-link-text ms-1">Sign Up</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
-        <div class="sidenav-footer mx-3 ">
+        <!-- <div class="sidenav-footer mx-3 ">
             <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
                 <div class="full-background"
                     style="background-image: url('../assets/img/curved-images/white-curved.jpg')"></div>
@@ -367,7 +369,7 @@
             </div>
             <a class="btn bg-gradient-primary mt-3 w-100"
                 href="https://www.creative-tim.com/product/soft-ui-dashboard-pro?ref=sidebarfree">Upgrade to pro</a>
-        </div>
+        </div> -->
     </aside>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
@@ -384,18 +386,18 @@
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                        <div class="input-group">
+                        <!-- <div class="input-group">
                             <span class="input-group-text text-body"><i class="fas fa-search"
                                     aria-hidden="true"></i></span>
                             <input type="text" class="form-control" placeholder="Type here...">
-                        </div>
+                        </div> -->
                     </div>
                     <ul class="navbar-nav  justify-content-end">
-                        <li class="nav-item d-flex align-items-center">
+                        <!-- <li class="nav-item d-flex align-items-center">
                             <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank"
                                 href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online
                                 Builder</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item d-flex align-items-center">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

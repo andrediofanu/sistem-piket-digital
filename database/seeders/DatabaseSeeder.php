@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Kelas::create([
             'id' => 1,
-            'name' => 'XII-J',
+            'name' => 'XI-J',
             'wali_kelas_id' => 3
         ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');

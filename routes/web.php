@@ -7,7 +7,7 @@ use App\Http\Controllers\IzinGuruController;
 use App\Http\Controllers\IzinSiswaController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
