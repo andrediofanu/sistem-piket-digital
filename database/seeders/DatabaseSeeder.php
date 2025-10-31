@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\MataPelajaran;
 use App\Models\StatusIzinSiswa;
+use App\Models\StatusIzinGuru;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Kelas;
@@ -41,6 +43,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'XI-J',
             'wali_kelas_id' => 3
         ]);
+        MataPelajaran::create([
+            'id' => 1,
+            'name' => 'Matematika',
+        ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         StatusIzinSiswa::create([
             'id' => 1,
@@ -56,6 +62,18 @@ class DatabaseSeeder extends Seeder
         ]);
         StatusIzinSiswa::create([
             'id' => 4,
+            'name' => 'Pengajuan Ditolak',
+        ]);
+        StatusIzinGuru::create([
+            'id' => 1,
+            'name' => 'Menunggu Persetujuan Admin Piket',
+        ]);
+        StatusIzinGuru::create([
+            'id' => 2,
+            'name' => 'Pengajuan Selesai',
+        ]);
+        StatusIzinGuru::create([
+            'id' => 3,
             'name' => 'Pengajuan Ditolak',
         ]);
         User::factory()->create([
