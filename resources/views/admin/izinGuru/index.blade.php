@@ -10,7 +10,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <a href="{{ route('izin-siswa.create') }}">
+            <a href="{{ route('izin-guru.create') }}">
                 <button type="button" class="btn btn-primary">+ Tambah Izin Guru</button>
             </a>
         </div>
@@ -69,10 +69,10 @@
                                     <th style="width:160px" class="p-2">Nama</th>
                                     <th style="width:110px" class="p-2">Kelas</th>
                                     <!-- <th style="width:200px" class="p-2">Jenis Izin</th> -->
-                                    <th style="width:140px">Status Ketidakhadiran</th>
-                                    <th style="width:200px" class="p-2">Keterangan</th>
+                                    <th style="width:50px">Status</th>
+                                    <!-- <th style="width:200px" class="p-2">Keterangan</th> -->
                                     <th style="width:140px">Mata Pelajaran</th>
-                                    <!-- <th style="width:140px">Guru Pengganti</th> -->
+                                    <th style="width:140px">Guru Pengganti</th>
                                     <!-- <th style="width:220px">Keterangan</th> -->
                                     <!-- <th style="width:140px">Wali Kelas</th> -->
                                     <!-- <th style="width:140px">Dibuat</th> -->
@@ -112,27 +112,40 @@
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ optional($izin->kelas)->name ?? '-' }}
                                             </p>
-                                            <p class="text-xs text-secondary mb-0">{{ optional($izin->waliKelas)->name ?? '-' }}
+                                            <p class="text-xs text-secondary mb-0"> Jam ke: {{ $izin->jam_mulai }} -
+                                                {{ $izin->jam_sampai ?? $izin->jam_selesai ?? '-' }}
                                             </p>
                                         </td>
                                         <td>
-                                            <p class="text-xs text-secondary mb-0">
-                                                {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                                            <p class="text-xs font-weight-bold mb-0">
+                                                {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-' }}
                                             </p>
+                                            <p class="text-xs text-secondary mb-0"> Ket: {{ $izin->keterangan }}
+                                            </p>
+                                        </td>
 
-                                        </td>
-                                        <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
-                                            <span class="text-secondary text-xs font-weight-bold">
-                                                {{ $izin->keterangan }}
-                                            </span>
-                                        </td>
+                                        <!-- <td>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                                                    </p>
+
+                                                </td> -->
+                                        <!-- <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $izin->keterangan }}
+                                                    </span>
+                                                </td> -->
                                         <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
                                             <span class="text-secondary text-xs font-weight-bold">
                                                 {{ optional($izin->mataPelajaran)->name ?? $izin->nama ?? '-' }}
                                             </span>
                                         </td>
+                                        <td class="align-middle" title="{{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-' }}">
+                                            <span
+                                                class="text-primary text-xs font-weight-bold">{{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-' }}</span>
+                                        </td>
 
-                                        
+
 
 
 
@@ -156,7 +169,7 @@
                                             @endif
                                         </td>
                                         <td class="align-middle text-sm">
-                                            @if($izin->status_id == 2)
+                                            @if($izin->status_id == 1)
                                                 <div class="d-flex align-items-center gap-1">
                                                     {{-- Form for Approval (status_id = 3) --}}
                                                     <form
@@ -190,8 +203,8 @@
                                             @endif
                                         </td>
                                         <!-- <td class="text-sm">
-                                                      <a href="" class="text-primary">Lihat Detail</a>
-                                                    </td> -->
+                                                                      <a href="" class="text-primary">Lihat Detail</a>
+                                                                    </td> -->
                                     </tr>
                                 @empty
                                     <tr>
@@ -218,7 +231,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Batal</button>
                                             <form
-                                                action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 3]) }}"
+                                                action="{{ route('izin-guru.update_status', ['izinGuru' => $izin->id, 'statusId' => 2]) }}"
                                                 method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-success">Ya, Setujui</button>
@@ -245,7 +258,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Batal</button>
                                             <form
-                                                action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 4]) }}"
+                                                action="{{ route('izin-guru.update_status', ['izinGuru' => $izin->id, 'statusId' => 3]) }}"
                                                 method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger">Ya, Tolak Izin</button>

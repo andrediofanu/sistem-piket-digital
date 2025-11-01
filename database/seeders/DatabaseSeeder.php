@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
         ]);
         StatusIzinSiswa::create([
             'id' => 3,
-            'name' => 'Pengajuan Selesai',
+            'name' => 'Pengajuan Disetujui',
         ]);
         StatusIzinSiswa::create([
             'id' => 4,
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
         ]);
         StatusIzinGuru::create([
             'id' => 2,
-            'name' => 'Pengajuan Selesai',
+            'name' => 'Pengajuan Disetujui',
         ]);
         StatusIzinGuru::create([
             'id' => 3,

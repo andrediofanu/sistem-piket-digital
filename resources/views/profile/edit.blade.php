@@ -36,7 +36,7 @@
                                 {{-- Name Field --}}
                                 <div class="mb-3">
                                     <label for="name" class="form-label">{{ __('Name') }}</label>
-                                    <input id="name" name="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" />
+                                    <input id="name" name="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" autofocus autocomplete="name" readonly/>
                                     @error('name')
                                         <div class="text-danger mt-2">{{ $message }}</div>
                                     @enderror
@@ -157,7 +157,7 @@
                 </div>
 
                 {{-- 3. Delete User Form --}}
-                <div class="card shadow-sm mb-4 border border-danger">
+                <!-- <div class="card shadow-sm mb-4 border border-danger">
                     <div class="card-body p-4">
                         <section class="space-y-6">
                             <header>
@@ -212,7 +212,7 @@
                             </div>
                         </section>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

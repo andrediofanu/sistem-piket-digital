@@ -61,5 +61,9 @@ class IzinGuru extends Model
     {
         return $this->belongsTo(\App\Models\MataPelajaran::class, 'mata_pelajaran_id');
     }
+    public function guru_pengganti()
+{
+    return $this->belongsTo(User::class, 'guru_pengganti_id');
+}
 }
 

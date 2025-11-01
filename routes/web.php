@@ -22,12 +22,17 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin-piket')->group(function () {
         Route::get('/izin-guru', [IzinGuruController::class, 'index'])->name('izin-guru.index');
+        Route::get('/izin-guru/create', [IzinGuruController::class, 'create'])->name('izin-guru.create');
+        Route::post('/izin-guru', [IzinGuruController::class, 'store'])->name('izin-guru.store');
+        Route::post('/izin-guru/{izinGuru}/status/{statusId}', [IzinGuruController::class, 'update'])
+            ->name('izin-guru.update_status');
         Route::get('/izin-siswa', [IzinSiswaController::class, 'index'])->name('izin-siswa.index');
         Route::get('/izin-siswa/create', [IzinSiswaController::class, 'create'])->name('izin-siswa.create');
         Route::post('/izin-siswa', [IzinSiswaController::class, 'store'])->name('izin-siswa.store');
         Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
             ->name('izin-siswa.update_status');
         Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
+      
     });
 
     Route::prefix('siswa')->group(function () {

@@ -99,6 +99,7 @@ class IzinSiswaController extends Controller
         if ($current && $current->isAdminPiket == 1) {
             $data['admin_piket_id'] = $current->id;
         }
+        // dd($data['admin_piket_id']);
 
         IzinSiswa::create($data);
 
@@ -189,7 +190,7 @@ class IzinSiswaController extends Controller
 
         // Determine the redirect message
         $action = ((int) $statusId === 3) ? 'disetujui' : 'ditolak';
-        $message = "Izin siswa a/n {$izinSiswa->user->name} berhasil {$action}.";
+        $message = "Izin siswa atas nama {$izinSiswa->user->name} berhasil {$action}.";
 
         // Redirect back to the previous page with a success message
         return back()->with('success', $message);
