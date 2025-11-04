@@ -40,6 +40,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/izin/create', [IzinSiswaController::class, 'createBySiswa'])->name('siswa.izin.create');
         Route::post('/izin', [IzinSiswaController::class, 'storeBySiswa'])->name('siswa.izin.store');
     });
+    Route::prefix('wali-kelas')->group(function () {
+        Route::get('/izin', [IzinSiswaController::class, 'indexByWaliKelas'])->name('waliKelas.izin.index');
+        Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'updateByWaliKelas'])
+            ->name('izin-siswaByWaliKelas.update_status');
+        // Route::get('/izin/create', [IzinSiswaController::class, 'createBySiswa'])->name('siswa.izin.create');
+        // Route::post('/izin', [IzinSiswaController::class, 'storeBySiswa'])->name('siswa.izin.store');
+    });
 
 
 });

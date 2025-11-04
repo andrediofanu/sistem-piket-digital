@@ -20,6 +20,13 @@ class IzinSiswaController extends Controller
         $izins = IzinSiswa::where('user_id', auth()->user()->id)->with(['kelas', 'adminPiket', 'waliKelas'])->orderBy('created_at', 'desc')->get();
         return view('siswa.izin.index', compact('izins'));
     }
+    public function indexByWaliKelas()
+    {
+        $izins = IzinSiswa::where("wali_kelas_id", auth()->user()->id)->with(['kelas', 'adminPiket', 'waliKelas'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('waliKelas.izinSiswa.index', compact('izins'));
+    }
     public function create()
     {
 
@@ -193,6 +200,26 @@ class IzinSiswaController extends Controller
         $message = "Izin siswa atas nama {$izinSiswa->user->name} berhasil {$action}.";
 
         // Redirect back to the previous page with a success message
+        return back()->with('success', $message);
+    }
+    public function updateByWaliKelas(Request $request, IzinSiswa $izinSiswa, $statusId)
+    {
+        // Valid status IDs for Wali Kelas: 2 = Disetujui, 4 = Ditolak
+        // dd($statusId);
+        $validStatusIds = [2, 4];
+        if (!in_array((int) $statusId, $validStatusIds)) {
+            return back()->with('error', 'Aksi tidak valid untuk wali kelas.');
+        }
+
+        // Update status_id
+        $izinSiswa->status_id = (int) $statusId;
+        $izinSiswa->save();
+
+        // Determine action text
+        $action = ((int) $statusId === 2) ? 'disetujui oleh wali kelas' : 'ditolak oleh wali kelas';
+        $message = "Izin siswa atas nama {$izinSiswa->user->name} berhasil {$action}.";
+
+        // Redirect with success message
         return back()->with('success', $message);
     }
     public function getSiswaByKelas($kelasId)
