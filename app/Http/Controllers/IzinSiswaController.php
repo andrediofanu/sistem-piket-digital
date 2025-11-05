@@ -27,6 +27,11 @@ class IzinSiswaController extends Controller
             ->get();
         return view('waliKelas.izinSiswa.index', compact('izins'));
     }
+    public function indexAlpha(){
+        $alphas = IzinSiswa::where('status_ketidakhadiran', 3)->with(['user', 'kelas', 'adminPiket', 'waliKelas'])->orderBy('created_at', 'desc')->get();
+        return view('admin.alpha.index', compact('alphas'));
+
+    }
     public function create()
     {
 

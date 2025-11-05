@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'update'])
             ->name('izin-siswa.update_status');
         Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
+        Route::get('/alpha', [IzinSiswaController::class, 'indexAlpha'])->name('alpha.index');
       
     });
 

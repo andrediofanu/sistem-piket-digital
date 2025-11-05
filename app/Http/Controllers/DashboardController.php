@@ -31,8 +31,8 @@ class DashboardController extends Controller
         $isAdminPiket = auth()->user()->isAdminPiket;
         $isWaliKelas = auth()->user()->isWaliKelas;
         // dd($role);
+        $siswa = User::where('role_id', 3)->get();
         if (auth()->user()->isAdminPiket == 1) {
-            $siswa = User::where('role_id', 3)->get();
             // dd($siswa);
         }
         return view('dashboard', compact('countStatus1', 'countStatus2', 'todayCount', 'isAdminPiket', 'isWaliKelas', 'role', 'siswa', 'countStatus1Guru', 'todayCountGuru', 'todayCountSiswaSakit', 'todayCountSiswaIzin', 'todayCountSiswaAlpha', 'todayCountGuruSakit', 'todayCountGuruIzin', 'todayCountGuruAlpha'));

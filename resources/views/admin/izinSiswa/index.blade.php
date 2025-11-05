@@ -22,6 +22,26 @@
       overflow-x: auto;
     }
 
+    #izinTable thead th {
+      /* Adds extra right padding to make space for the sort icon */
+      padding-right: 1.5rem !important;
+      /* Ensures the text is centered vertically in the header */
+      vertical-align: middle;
+    }
+
+    /* Fix for overlapping pagination items in DataTables (especially with custom themes) */
+    .dataTables_wrapper .pagination .page-item .page-link {
+      /* 1. Set the default text color for all buttons to a dark color for contrast */
+      color: #333333 !important;
+      /* Example: Dark gray/black for contrast on white/light background */
+    }
+
+    .dataTables_wrapper .pagination .page-item.active .page-link {
+      /* 2. Set the text color for the ACTIVE (pink) button to white */
+      color: white !important;
+    }
+
+
     .cell-truncate {
       max-width: 160px;
       white-space: nowrap;
@@ -61,7 +81,7 @@
           <div class="table-responsive p-3">
 
 
-            <table class="table align-items-center mb-0 ">
+            <table id="izinTable" class="table align-items-center mb-0 ">
               <thead>
                 <tr>
                   <th style="width:40px" class="p-2">No</th>
@@ -116,14 +136,16 @@
                     <td>
                       <p class="text-xs font-weight-bold mb-0"
                         title="{{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}">
-                        {{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}</p>
+                        {{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}
+                      </p>
                       @if ($izin->jenis_izin == 1 || $izin->jenis_izin == 2)
                         <p class="text-xs text-secondary mb-0"> Jam ke: {{ $izin->jam_mulai }} -
                           {{ $izin->jam_sampai ?? $izin->jam_selesai ?? '-' }}
                         </p>
                       @elseif($izin->jenis_izin == 3)
                         <p class="text-xs text-secondary mb-0"> Status:
-                          {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}</p>
+                          {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                        </p>
                       @endif
 
                     </td>
@@ -182,8 +204,8 @@
                       @endif
                     </td>
                     <!-- <td class="text-sm">
-                          <a href="" class="text-primary">Lihat Detail</a>
-                        </td> -->
+                                      <a href="" class="text-primary">Lihat Detail</a>
+                                    </td> -->
                   </tr>
                 @empty
                   <tr>

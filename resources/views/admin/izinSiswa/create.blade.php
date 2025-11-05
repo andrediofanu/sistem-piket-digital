@@ -38,7 +38,7 @@
                   <option value="">Pilih status ketidakhadiran</option>
                   <option value="1" {{ old('status_ketidakhadiran') == '1' ? 'selected' : '' }}>Sakit</option>
                   <option value="2" {{ old('status_ketidakhadiran') == '2' ? 'selected' : '' }}>Izin</option>
-                  <option value="3" {{ old('status_ketidakhadiran') == '3' ? 'selected' : '' }}>Alpha</option>
+                  <!-- <option value="3" {{ old('status_ketidakhadiran') == '3' ? 'selected' : '' }}>Alpha</option> -->
                 </select>
                 @error('status_ketidakhadiran') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>

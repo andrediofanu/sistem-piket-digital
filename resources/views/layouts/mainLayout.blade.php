@@ -29,7 +29,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/nucleo-icons.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/nucleo-svg.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" />
-
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <!-- Fonts and Icons (e.g., Font Awesome, Google Fonts) -->
     <!-- Example: If you use Google Fonts, include it here -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -44,6 +45,7 @@
 
     <!-- Example: Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
 
 
 
@@ -156,6 +158,34 @@
                                 </svg>
                             </div>
                             <span class="nav-link-text ms-1">Izin Siswa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('alpha.index', 'alpha.create') ? 'active bg-white shadow-soft-xs' : '' }}"
+                            href="{{ route('alpha.index') }}">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <svg width="12px" height="12px" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+                                    <title>student</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF"
+                                            fill-rule="nonzero">
+                                            <g transform="translate(1716.000000, 291.000000)">
+                                                <g id="student" transform="translate(153.000000, 2.000000)">
+                                                    <!-- Head -->
+                                                    <circle class="color-background opacity-6" cx="21" cy="13" r="6">
+                                                    </circle>
+                                                    <!-- Body -->
+                                                    <path class="color-background"
+                                                        d="M8,37 C8,30.9249 13.9249,26 21,26 C28.0751,26 34,30.9249 34,37 L8,37 Z">
+                                                    </path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="nav-link-text ms-1">Tanpa Keterangan</span>
                         </a>
                     </li>
                 @endif
@@ -418,6 +448,7 @@
                         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
                     </ol>
                     <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -433,16 +464,51 @@
                                 href="https://www.creative-tim.com/builder?ref=navbar-soft-ui-dashboard">Online
                                 Builder</a>
                         </li> -->
+                        <!-- <li class="nav-item d-flex align-items-center">
+                            <p class="text-xs font-weight-bold mb-0">Role aktif: </p>
+                        </li> -->
+                        @php
+                            $roles = [];
+
+                            if (auth()->user()->role_id == 2) {
+                                $roles[] = 'Guru';
+                            }
+
+                            if (auth()->user()->isAdminPiket == 1) {
+                                $roles[] = 'Admin Piket';
+                            }
+
+                            if (auth()->user()->isWaliKelas == 1) {
+                                $roles[] = 'Wali Kelas';
+                            }
+
+                            if (auth()->user()->role_id == 3) {
+                                $roles[] = 'Siswa';
+                            }
+                        @endphp
+
+                        <li class="nav-item d-flex align-items-center">
+                            <a href="{{ route('profile.edit') }}">
+
+                                <button type="button" class="btn btn-secondary btn-sm mb-0 me-3">
+                                    <span class="d-sm-inline d-none font-weight-bolder">{{ auth()->user()->name }}</span>
+                                    <span class="mx-1">•</span>
+                                    <span class="d-sm-inline d-none font-weight-normal">{{ implode(' | ', $roles) }}</span>
+                                </button>
+                            </a>
+                        </li>
+
+
                         <li class="nav-item d-flex align-items-center">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger btn-sm mb-0 me-3">
-                                    <i class="fa fa-user me-sm-1"></i>
+                                    <i class="fa-solid fa-right-from-bracket"></i>
                                     <span class="d-sm-inline d-none">Sign Out</span>
                                 </button>
                             </form>
                         </li>
-                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                        <!-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                                 <div class="sidenav-toggler-inner">
                                     <i class="sidenav-toggler-line"></i>
@@ -450,13 +516,13 @@
                                     <i class="sidenav-toggler-line"></i>
                                 </div>
                             </a>
-                        </li>
-                        <li class="nav-item px-3 d-flex align-items-center">
+                        </li> -->
+                        <!-- <li class="nav-item px-3 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0">
                                 <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                             </a>
-                        </li>
-                        <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                        </li> -->
+                        <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
                             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-bell cursor-pointer"></i>
@@ -538,7 +604,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -983,6 +1049,33 @@
 
             // Update IDs for better consistency (Note: I changed select IDs in the HTML form too)
             // document.getElementById('exampleFormControlSelect1').id = 'selectKelas';
+        });
+    </script>
+    <!-- jQuery (required by DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#izinTable').DataTable({
+                order: [[0, 'asc']], // Sort by first column (No)
+                pageLength: 10, // Show 10 rows per page
+                columnDefs: [
+                    { orderable: false, targets: -1 } // Disable sorting on last column (Aksi)
+                ],
+                // 💡 NEW CODE TO CHANGE PAGINATION TEXT 💡
+                language: {
+                    // Change "Previous" to "<" and "Next" to ">"
+                    paginate: {
+                        previous: '<',
+                        next: '>'
+                    }
+                }
+                // ------------------------------------------
+            });
         });
     </script>
 </body>
