@@ -19,12 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            
-            
             $table->smallInteger('isAdminPiket')->default(0);
             $table->smallInteger('isWaliKelas')->default(0);
-            
-            
             $table->rememberToken();
             $table->timestamps();
         });

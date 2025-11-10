@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
             ->name('izin-siswa.update_status');
         Route::get('/get-siswa-by-kelas/{kelas}', [IzinSiswaController::class, 'getSiswaByKelas']);
         Route::get('/alpha', [IzinSiswaController::class, 'indexAlpha'])->name('alpha.index');
+        Route::get('/alpha-siswa/create', [IzinSiswaController::class, 'createAlpha'])->name('alpha-siswa.create');
+        Route::post('/alpha-siswa', [IzinSiswaController::class, 'storeAlpha'])->name('alpha-siswa.store');
+        
       
     });
 
@@ -45,8 +48,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/izin', [IzinSiswaController::class, 'indexByWaliKelas'])->name('waliKelas.izin.index');
         Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'updateByWaliKelas'])
             ->name('izin-siswaByWaliKelas.update_status');
-        // Route::get('/izin/create', [IzinSiswaController::class, 'createBySiswa'])->name('siswa.izin.create');
-        // Route::post('/izin', [IzinSiswaController::class, 'storeBySiswa'])->name('siswa.izin.store');
     });
 
 

@@ -90,13 +90,8 @@
                   <th style="width:160px" class="p-2">Nama</th>
                   <th style="width:200px" class="p-2">Jenis Izin</th>
                   <th style="width:200px" class="p-2">Keterangan</th>
-                  <!-- <th style="width:140px">Status Ketidakhadiran</th> -->
-                  <!-- <th style="width:220px">Keterangan</th> -->
-                  <!-- <th style="width:140px">Wali Kelas</th> -->
-                  <!-- <th style="width:140px">Dibuat</th> -->
                   <th style="width:200px" class="p-2">Status Izin</th>
                   <th style="width:90px" class="p-2">Aksi</th>
-                  <!-- <th style="width:60px" class="p-2">Detail</th> -->
                 </tr>
               </thead>
               <tbody>

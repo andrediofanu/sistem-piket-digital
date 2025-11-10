@@ -69,13 +69,14 @@
                                     <th style="width:160px" class="p-2">Nama</th>
                                     <th style="width:110px" class="p-2">Kelas</th>
                                     <!-- <th style="width:200px" class="p-2">Jenis Izin</th> -->
-                                    <th style="width:50px">Status</th>
+                                    <th style="width:40px">Status</th>
                                     <!-- <th style="width:200px" class="p-2">Keterangan</th> -->
-                                    <th style="width:140px">Mata Pelajaran</th>
-                                    <th style="width:140px">Guru Pengganti</th>
+                                    <th style="width:100px">Mapel</th>
+                                    <th style="width:100">Guru Pengganti</th>
                                     <!-- <th style="width:220px">Keterangan</th> -->
                                     <!-- <th style="width:140px">Wali Kelas</th> -->
                                     <!-- <th style="width:140px">Dibuat</th> -->
+                                    <th style="width:200px" class="p-2">Tugas</th>
                                     <th style="width:200px" class="p-2">Status Izin</th>
                                     <th style="width:90px" class="p-2">Aksi</th>
                                     <!-- <th style="width:60px" class="p-2">Detail</th> -->
@@ -125,22 +126,23 @@
                                         </td>
 
                                         <!-- <td>
-                                                    <p class="text-xs text-secondary mb-0">
-                                                        {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
-                                                    </p>
+                                                                    <p class="text-xs text-secondary mb-0">
+                                                                        {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                                                                    </p>
 
-                                                </td> -->
+                                                                </td> -->
                                         <!-- <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
-                                                    <span class="text-secondary text-xs font-weight-bold">
-                                                        {{ $izin->keterangan }}
-                                                    </span>
-                                                </td> -->
+                                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                                        {{ $izin->keterangan }}
+                                                                    </span>
+                                                                </td> -->
                                         <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
                                             <span class="text-secondary text-xs font-weight-bold">
                                                 {{ optional($izin->mataPelajaran)->name ?? $izin->nama ?? '-' }}
                                             </span>
                                         </td>
-                                        <td class="align-middle" title="{{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-' }}">
+                                        <td class="align-middle"
+                                            title="{{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-' }}">
                                             <span
                                                 class="text-primary text-xs font-weight-bold">{{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-' }}</span>
                                         </td>
@@ -155,7 +157,11 @@
                                         <!-- <td class="cell-keterangan" title="{{ $izin->keterangan ?? '' }}">{{ $izin->keterangan ?? '-' }}</td> -->
                                         <!-- <td class="cell-truncate" title="{{ optional($izin->waliKelas)->name ?? '' }}">{{ optional($izin->waliKelas)->name ?? '-' }}</td> -->
                                         <!-- <td class="cell-small">{{ $izin->created_at->format('Y-m-d H:i') }}</td> -->
-
+                                        <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
+                                            <span class="text-secondary text-xs font-weight-bold">
+                                                {{ $izin->bentuk_tugas ?? '-' }}
+                                            </span>
+                                        </td>
                                         <td class="align-middle text-sm">
                                             @if($izin->status_id == 1)
                                                 <span
@@ -168,6 +174,7 @@
                                                     class="badge badge-sm bg-gradient-danger">{{ $izin->statusIzinGuru->name ?? '-' }}</span>
                                             @endif
                                         </td>
+
                                         <td class="align-middle text-sm">
                                             @if($izin->status_id == 1)
                                                 <div class="d-flex align-items-center gap-1">
@@ -203,8 +210,8 @@
                                             @endif
                                         </td>
                                         <!-- <td class="text-sm">
-                                                                      <a href="" class="text-primary">Lihat Detail</a>
-                                                                    </td> -->
+                                                                                      <a href="" class="text-primary">Lihat Detail</a>
+                                                                                    </td> -->
                                     </tr>
                                 @empty
                                     <tr>

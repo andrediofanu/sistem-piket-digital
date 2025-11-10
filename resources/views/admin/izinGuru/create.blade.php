@@ -21,16 +21,6 @@
                   @error('tanggal_izin') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
               </div>
-              <!-- <div class="form-group col-lg-4">
-                                <label for="jenis_izin">Jenis Izin</label>
-                                <select name="jenis_izin" class="form-control" id="jenis_izin">
-                                  <option value="">Pilih jenis</option>
-                                  <option value="1" {{ old('jenis_izin') == '1' ? 'selected' : '' }}>Masuk Kelas (Terlambat)</option>
-                                  <option value="2" {{ old('jenis_izin') == '2' ? 'selected' : '' }}>Meninggalkan Kelas</option>
-                                  <option value="3" {{ old('jenis_izin') == '3' ? 'selected' : '' }}>Tidak Masuk Madrasah</option>
-                                </select>
-                                @error('jenis_izin') <div class="text-danger small">{{ $message }}</div> @enderror
-                              </div> -->
               <div class="form-group col-lg-5">
                 <label for="user_id">Guru Izin</label>
                 <select class="form-control" id="user_id" name="user_id">

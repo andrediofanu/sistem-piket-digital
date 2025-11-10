@@ -20,8 +20,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->string('jenis_izin');
             $table->string('status_ketidakhadiran');
-            $table->string('keterangan');
-            
+            $table->string('keterangan');            
             $table->smallInteger('jam_mulai');
             $table->smallInteger('jam_selesai');
             $table->unsignedBigInteger('wali_kelas_id')->nullable();

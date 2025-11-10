@@ -8,25 +8,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class IzinSiswa extends Model
 {
     use HasFactory;
-
-    // adjust if your migration/table uses a different name
     protected $table = 'izin_siswa';
-
     protected $fillable = [
         'tanggal_izin',
         'kelas_id',
         'user_id',
         'nama',
         'jenis_izin',
-        'status_ketidakhadiran', // added
+        'status_ketidakhadiran', 
         'jam_mulai',
-        'jam_selesai',           // renamed field used by form/controller
+        'jam_selesai',           
         'keterangan',
         'admin_piket_id',
         'wali_kelas_id',
-        'status_id',             // added
+        'status_id',             
     ];
-
     protected $casts = [
         'tanggal_izin' => 'date',
         'jenis_izin' => 'integer',
@@ -35,12 +31,10 @@ class IzinSiswa extends Model
         'jam_selesai' => 'integer',
         'user_id' => 'integer',
     ];
-
     public function kelas()
     {
         return $this->belongsTo(\App\Models\Kelas::class, 'kelas_id');
     }
-
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id');

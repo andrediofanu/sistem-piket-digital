@@ -6,6 +6,7 @@ use App\Models\IzinSiswa;
 use App\Models\IzinGuru;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -22,7 +23,7 @@ class DashboardController extends Controller
         $todayCountGuruSakit = IzinGuru::where('status_ketidakhadiran', 1)->whereDate('tanggal_izin', today())->count();
         $todayCountGuruIzin = IzinGuru::where('status_ketidakhadiran', 2)->whereDate('tanggal_izin', today())->count();
         $todayCountGuruAlpha = IzinGuru::where('status_ketidakhadiran', 3)->whereDate('tanggal_izin', today())->count();
-        
+
 
         $countStatus1Guru = IzinGuru::where('status_id', 1)->count();
         $todayCountGuru = IzinGuru::whereDate('tanggal_izin', today())->count();
@@ -37,4 +38,5 @@ class DashboardController extends Controller
         }
         return view('dashboard', compact('countStatus1', 'countStatus2', 'todayCount', 'isAdminPiket', 'isWaliKelas', 'role', 'siswa', 'countStatus1Guru', 'todayCountGuru', 'todayCountSiswaSakit', 'todayCountSiswaIzin', 'todayCountSiswaAlpha', 'todayCountGuruSakit', 'todayCountGuruIzin', 'todayCountGuruAlpha'));
     }
+    
 }
