@@ -29,7 +29,11 @@ class IzinSiswaController extends Controller
     }
     public function indexByWaliKelas()
     {
-        $izins = IzinSiswa::where("wali_kelas_id", auth()->user()->id)->with(['kelas', 'adminPiket', 'waliKelas'])
+        $izins = IzinSiswa::whereIn('jenis_izin', [1, 2]) // Condition 1: Masuk Kelas (Terlambat) or Meninggalkan Kelas
+            ->orWhere(function ($query) {
+                $query->where('jenis_izin', 3) // Condition 2A: Is 'Tidak Masuk Madrasah'
+                    ->whereIn('status_ketidakhadiran', [1, 2]); // Condition 2B: AND is 'Sakit' or 'Izin'
+            })->where("wali_kelas_id", auth()->user()->id)->with(['kelas', 'adminPiket', 'waliKelas'])
             ->orderBy('created_at', 'desc')
             ->get();
         return view('waliKelas.izinSiswa.index', compact('izins'));
@@ -96,9 +100,19 @@ class IzinSiswaController extends Controller
             ? (int) $validated['status_ketidakhadiran']
             : 0;
 
-        // Safely get jam values (use array_key_exists to avoid undefined index)
+        // Safely get jam values
         $jamMulai = array_key_exists('jam_mulai', $validated) ? (int) $validated['jam_mulai'] : null;
         $jamSelesai = array_key_exists('jam_selesai', $validated) ? (int) $validated['jam_selesai'] : null;
+
+        // Attach wali_kelas_id
+        $kelas = Kelas::find($validated['kelas_id']);
+
+        // 🟡 Add this validation here
+        if (!$kelas || !$kelas->wali_kelas_id) {
+            return back()
+                ->withInput()
+                ->with('warning', 'Kelas belum memiliki wali kelas, mohon hubungi admin.');
+        }
 
         $data = [
             'tanggal_izin' => $validated['tanggal_izin'],
@@ -109,23 +123,20 @@ class IzinSiswaController extends Controller
             'jam_mulai' => $jamMulai,
             'jam_selesai' => $jamSelesai,
             'keterangan' => $validated['keterangan'] ?? null,
+            'wali_kelas_id' => $kelas->wali_kelas_id,
         ];
 
-        // Attach wali_kelas_id
-        $kelas = Kelas::find($validated['kelas_id']);
-        $data['wali_kelas_id'] = $kelas ? $kelas->wali_kelas_id : null;
-
-        // Attach admin piket if logged in user is admin piket (safely check auth)
+        // Attach admin piket if logged in user is admin piket
         $current = auth()->user();
         if ($current && $current->isAdminPiket == 1) {
             $data['admin_piket_id'] = $current->id;
         }
-        // dd($data['admin_piket_id']);
 
         IzinSiswa::create($data);
 
         return redirect()->route('izin-siswa.index')->with('success', 'Izin siswa ditambahkan.');
     }
+
     public function storeAlpha(Request $request)
     {
         $rules = [
@@ -176,7 +187,7 @@ class IzinSiswaController extends Controller
             'status_ketidakhadiran' => $statusKet,
             'jam_mulai' => $jamMulai,
             'jam_selesai' => $jamSelesai,
-            'keterangan' => $validated['keterangan'] ?? null,
+            'keterangan' => $validated['keterangan'] ?? "-",
         ];
 
         // Attach wali_kelas_id

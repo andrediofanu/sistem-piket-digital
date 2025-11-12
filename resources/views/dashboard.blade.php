@@ -118,32 +118,92 @@
     </div>
   </div>
   <div class="row mt-4">
-    <div class="col-lg-7 mb-lg-0 mb-4">
+
+
+    <div class="col-lg-6 mb-lg-0 mb-4">
       <div class="card">
         <div class="card-body p-3">
-          "chart"
+          <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800">Izin Guru</h1>
+
+            <!-- Chart Container: Equivalent to col-lg-7 -->
+
+            <!-- Student Chart -->
+            <div class="w-full lg:w-7/12">
+              <div class="bg-white shadow-2xl rounded-xl border border-gray-100 p-2">
+                <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="w-5 h-5 mr-2 text-blue-500">
+                    <path d="M12 20V10" />
+                    <path d="M18 20V4" />
+                    <path d="M6 20v-4" />
+                  </svg>
+                  Leave Requests by Guru
+                </h2>
+                <div class="relative h-96">
+                  <canvas id="barChartGuru"></canvas>
+                </div>
+              </div>
+            </div>
+
+          </div>
 
         </div>
       </div>
     </div>
-    <div class="col-lg-5">
-      <div class="card h-100 p-3">
-        <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
-          style="background-image: url('../assets/img/ivancik.jpg');">
-          <span class="mask bg-gradient-dark"></span>
-          <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
-            <h5 class="text-white font-weight-bolder mb-4 pt-2">Card BG</h5>
-            <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium molestias
-              dolorum suscipit dicta voluptates maiores vero reiciendis nostrum autem accusantium voluptas nemo at error,
-              quis similique? Mollitia, velit dolores!</p>
-            <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-              Read More
-              <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
-            </a>
+
+    <div class="col-lg-6 mb-lg-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800">Izin Siswa</h1>
+
+            <!-- Chart Container: Equivalent to col-lg-7 -->
+
+            <!-- Student Chart -->
+            <div class="w-full lg:w-7/12">
+              <div class="bg-white shadow-2xl rounded-xl border border-gray-100 p-2">
+                <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="w-5 h-5 mr-2 text-blue-500">
+                    <path d="M12 20V10" />
+                    <path d="M18 20V4" />
+                    <path d="M6 20v-4" />
+                  </svg>
+                  Leave Requests by Student
+                </h2>
+                <div class="relative h-96">
+                  <canvas id="barChartSiswa"></canvas>
+                </div>
+              </div>
+            </div>
+
           </div>
+
         </div>
       </div>
     </div>
+
+    <!-- <div class="col-lg-5">
+        <div class="card h-100 p-3">
+          <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
+            style="background-image: url('../assets/img/ivancik.jpg');">
+            <span class="mask bg-gradient-dark"></span>
+            <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
+              <h5 class="text-white font-weight-bolder mb-4 pt-2">Card BG</h5>
+              <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium molestias
+                dolorum suscipit dicta voluptates maiores vero reiciendis nostrum autem accusantium voluptas nemo at error,
+                quis similique? Mollitia, velit dolores!</p>
+              <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
+                Read More
+                <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
   </div>
   <div class="row mt-4">
     <div class="col-lg-5 mb-lg-0 mb-4">
@@ -715,5 +775,78 @@
       </div>
     </div>
   </footer>
-  
+  <script>
+    // Data from Laravel
+    const teacherData = @json($countGuru);
+    const studentData = @json($countSiswaByKelas);
+
+    async function fetchTeacherLeaveData() {
+      await new Promise(resolve => setTimeout(resolve, 200));
+      return teacherData;
+    }
+
+    async function fetchStudentLeaveData() {
+      await new Promise(resolve => setTimeout(resolve, 200));
+      return studentData;
+    }
+
+    async function renderTeacherChart() {
+      const chartData = await fetchTeacherLeaveData();
+      const labels = chartData.map(item => item.user_name);
+      const dataPoints = chartData.map(item => item.request_count);
+
+      const ctx = document.getElementById('barChartGuru').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Teacher Leave Requests',
+            data: dataPoints,
+            backgroundColor: 'rgba(249, 115, 22, 0.9)',
+            borderColor: '#f97316',
+            borderWidth: 1,
+            borderRadius: 8
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    async function renderStudentChart() {
+      const chartData = await fetchStudentLeaveData();
+      if (chartData.length && chartData[0].hasOwnProperty('user_name')) {
+        labels = chartData.map(item => item.user_name);
+      } else if (chartData.length && chartData[0].hasOwnProperty('class_name')) {
+        labels = chartData.map(item => item.class_name);
+      } else {
+        labels = [];
+      }
+      const dataPoints = chartData.map(item => item.request_count);
+
+      const ctx = document.getElementById('barChartSiswa').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Student Leave Requests',
+            data: dataPoints,
+            backgroundColor: 'rgba(59, 130, 246, 0.9)', // Blue
+            borderColor: '#3b82f6',
+            borderWidth: 1,
+            borderRadius: 8
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    window.onload = async function () {
+      await renderTeacherChart();
+      await renderStudentChart();
+    };
+  </script>
+
+
 @endsection

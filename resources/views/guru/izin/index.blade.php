@@ -10,7 +10,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <a href="{{ route('izin-guru.create') }}">
+            <a href="{{ route('guru.izin.create') }}">
                 <button type="button" class="btn btn-primary">+ Tambah Izin Guru</button>
             </a>
         </div>
@@ -174,38 +174,7 @@
                                         </td>
 
                                         <td class="align-middle text-sm">
-                                            @if($izin->status_id == 1)
-                                                <div class="d-flex align-items-center gap-1">
-                                                    {{-- Form for Approval (status_id = 3) --}}
-                                                    <form
-                                                        action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 3]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <!-- Approve Button -->
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-success d-flex align-items-center justify-content-center m-0"
-                                                            style="width:34px; height:24px;" data-bs-toggle="modal"
-                                                            data-bs-target="#confirmApprove{{ $izin->id }}">
-                                                            <i class="fa-solid fa-check"></i>
-                                                        </button>
-                                                    </form>
-
-                                                    {{-- Form for Rejection (status_id = 4) --}}
-                                                    <form
-                                                        action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 4]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger d-flex align-items-center justify-content-center m-0"
-                                                            style="width:34px; height:24px;" data-bs-toggle="modal"
-                                                            data-bs-target="#confirmReject{{ $izin->id }}">
-                                                            <i class="fa-solid fa-xmark"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @else
-                                                <span class="align-middle">-</span>
-                                            @endif
+                                            -
                                         </td>
                                         <!-- <td class="text-sm">
                                                                                                               <a href="" class="text-primary">Lihat Detail</a>
@@ -218,61 +187,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        @foreach($izins as $izin)
-                            <!-- Approve Modal -->
-                            <div class="modal fade" id="confirmApprove{{ $izin->id }}" tabindex="-1"
-                                aria-labelledby="approveLabel{{ $izin->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="approveLabel{{ $izin->id }}">Confirm Approval</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah anda yakin untuk menyetujui izin ini?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Batal</button>
-                                            <form
-                                                action="{{ route('izin-guru.update_status', ['izinGuru' => $izin->id, 'statusId' => 2]) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success">Ya, Setujui</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Reject Modal -->
-                            <div class="modal fade" id="confirmReject{{ $izin->id }}" tabindex="-1"
-                                aria-labelledby="rejectLabel{{ $izin->id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="rejectLabel{{ $izin->id }}">Confirm Rejection</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Apakah anda yakin untuk menolak izin ini?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Batal</button>
-                                            <form
-                                                action="{{ route('izin-guru.update_status', ['izinGuru' => $izin->id, 'statusId' => 3]) }}"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger">Ya, Tolak Izin</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                        
 
                     </div>
                 </div>

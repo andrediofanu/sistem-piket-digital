@@ -16,7 +16,7 @@ return new class extends Migration {
             // Issue 2 Fix: Columns must be defined before adding foreign keys.
             // Using 'unsignedBigInteger' is standard for foreign keys.
             // They are set to 'nullable' to support 'onDelete('set null')'.
-            $table->unsignedBigInteger('role_id')->nullable()->after('id');
+            $table->unsignedBigInteger('role_id')->nullable()->after('nis/nip');
             $table->unsignedBigInteger('kelas_id')->nullable()->after('role_id');
 
             // Now we can define the foreign key constraints.

@@ -21,7 +21,7 @@
         .table-responsive {
             overflow-x: auto;
         }
-        
+
 
         .cell-truncate {
             max-width: 160px;
@@ -62,7 +62,7 @@
                     <div class="table-responsive p-3">
 
 
-                        <table class="table align-items-center mb-0 w-100">
+                        <table id="izinTable" class="table align-items-center mb-0 w-100">
                             <thead>
                                 <tr>
                                     <th style="width:40px" class="p-2">No</th>
@@ -96,16 +96,16 @@
                                             <span
                                                 class="text-secondary text-xs font-weight-bold">{{ optional($alpha->tanggal_izin)->format('Y-m-d') ?? $alpha->tanggal_izin }}</span>
                                         </td>
-                                        <td class="align-middle" title="{{ optional($alpha->user)->name ?? $alpha->nama ?? '' }}">
+                                        <td class="align-middle"
+                                            title="{{ optional($alpha->user)->name ?? $alpha->nama ?? '' }}">
                                             <span
                                                 class="text-primary text-xs font-weight-bold">{{ optional($alpha->user)->name ?? $alpha->nama ?? '-' }}</span>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">{{ optional($alpha->kelas)->name ?? '-' }}
                                             </p>
-                                            <!-- <p class="text-xs text-secondary mb-0"> Jam ke: {{ $alpha->jam_mulai }} -
-                                                {{ $alpha->jam_sampai ?? $alpha->jam_selesai ?? '-' }} -->
-                                            </p>
+                                            <p class="text-xs text-secondary mb-0">
+                                                {{ optional($alpha->waliKelas)->name ?? '-' }}</p>
                                         </td>
                                         <td>
                                             <p class="text-xs font-weight-bold mb-0">
@@ -115,8 +115,8 @@
                                             </p>
                                         </td>
                                         <!-- <td class="align-middle text-sm">
-                                            Td AKsi
-                                        </td> -->
+                                                    Td AKsi
+                                                </td> -->
                                     </tr>
                                 @empty
                                     <tr>
@@ -125,7 +125,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        
+
 
                     </div>
                 </div>
