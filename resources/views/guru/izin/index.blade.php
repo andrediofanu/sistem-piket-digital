@@ -77,8 +77,7 @@
                                     <!-- <th style="width:140px">Dibuat</th> -->
                                     <th style="width:200px" class="p-2">Tugas</th>
                                     <th style="width:200px" class="p-2">Status Izin</th>
-                                    <th style="width:90px" class="p-2">Aksi</th>
-                                    <!-- <th style="width:60px" class="p-2">Detail</th> -->
+                                    <th style="width:60px" class="p-2">Detail</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,10 +105,12 @@
                                                 class="text-secondary text-xs font-weight-bold">{{ optional($izin->tanggal_izin)->format('Y-m-d') ?? $izin->tanggal_izin }}</span>
                                         </td>
                                         <td class="align-middle" title="{{ optional($izin->user)->name ?? $izin->nama ?? '' }}">
-                                            
-                                            <p class="text-xs text-primary font-weight-bold mb-0">{{ optional($izin->user)->name ?? $izin->nama ?? '-' }}
+
+                                            <p class="text-xs text-primary font-weight-bold mb-0">
+                                                {{ optional($izin->user)->name ?? $izin->nama ?? '-' }}
                                             </p>
-                                                <p class="text-xs text-secondary mb-0"> Pengganti: {{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-'}}
+                                            <p class="text-xs text-secondary mb-0"> Pengganti:
+                                                {{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-'}}
                                             </p>
                                         </td>
                                         <td>
@@ -128,22 +129,22 @@
                                         </td>
 
                                         <!-- <td>
-                                                                                            <p class="text-xs text-secondary mb-0">
-                                                                                                {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
-                                                                                            </p>
+                                                                                                    <p class="text-xs text-secondary mb-0">
+                                                                                                        {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                                                                                                    </p>
 
-                                                                                        </td> -->
+                                                                                                </td> -->
                                         <!-- <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
-                                                                                            <span class="text-secondary text-xs font-weight-bold">
-                                                                                                {{ $izin->keterangan }}
-                                                                                            </span>
-                                                                                        </td> -->
+                                                                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                                                                        {{ $izin->keterangan }}
+                                                                                                    </span>
+                                                                                                </td> -->
                                         <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
                                             <span class="text-secondary text-xs font-weight-bold">
                                                 {{ optional($izin->mataPelajaran)->name ?? $izin->nama ?? '-' }}
                                             </span>
                                         </td>
-                                        
+
 
 
 
@@ -174,11 +175,15 @@
                                         </td>
 
                                         <td class="align-middle text-sm">
-                                            -
+                                            <a href="{{ route('guru.izin.show', $izin->id) }}"
+                                                class="btn btn-info btn-sm d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
+                                                style="width:34px; height:24px;" title="Lihat Detail">
+                                                <i class="fas fa-info"></i>
+                                            </a>
                                         </td>
                                         <!-- <td class="text-sm">
-                                                                                                              <a href="" class="text-primary">Lihat Detail</a>
-                                                                                                            </td> -->
+                                                                                                                      <a href="" class="text-primary">Lihat Detail</a>
+                                                                                                                    </td> -->
                                     </tr>
                                 @empty
                                     <tr>
@@ -187,7 +192,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        
+
 
                     </div>
                 </div>

@@ -167,16 +167,17 @@
                       @endif
                     </td>
                     <td class="align-middle text-sm">
-                      @if($izin->status_id == 2)
-                        <div class="d-flex align-items-center gap-1">
+                      <div class="d-flex align-items-center gap-1">
+                        @if($izin->status_id == 2)
+
                           {{-- Form for Approval (status_id = 3) --}}
                           <form action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 3]) }}"
                             method="POST">
                             @csrf
                             <!-- Approve Button -->
-                            <button type="button"
-                              class="btn btn-sm btn-success d-flex align-items-center justify-content-center m-0"
-                              style="width:34px; height:24px;" data-bs-toggle="modal"
+                            <button type="button" title="Setujui Izin"
+                              class="btn btn-sm btn-success d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
+                              style="width:24px; height:24px;" data-bs-toggle="modal"
                               data-bs-target="#confirmApprove{{ $izin->id }}">
                               <i class="fa-solid fa-check"></i>
                             </button>
@@ -186,21 +187,26 @@
                           <form action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 4]) }}"
                             method="POST">
                             @csrf
-                            <button type="button"
-                              class="btn btn-sm btn-danger d-flex align-items-center justify-content-center m-0"
-                              style="width:34px; height:24px;" data-bs-toggle="modal"
+                            <button type="button" title="Tolak Izin"
+                              class="btn btn-sm btn-danger d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
+                              style="width:24px; height:24px;" data-bs-toggle="modal"
                               data-bs-target="#confirmReject{{ $izin->id }}">
                               <i class="fa-solid fa-xmark"></i>
                             </button>
                           </form>
-                        </div>
-                      @else
-                        <span class="align-middle">-</span>
-                      @endif
+                        @else
+
+                        @endif
+                        <a href="{{ route('izin-siswa.show', $izin->id) }}"
+                          class="btn btn-info btn-sm d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
+                          style="width:24px; height:24px;" title="Lihat Detail">
+                          <i class="fas fa-info"></i>
+                        </a>
+                      </div>
                     </td>
                     <!-- <td class="text-sm">
-                                      <a href="" class="text-primary">Lihat Detail</a>
-                                    </td> -->
+                                                  <a href="" class="text-primary">Lihat Detail</a>
+                                                </td> -->
                   </tr>
                 @empty
                   <tr>

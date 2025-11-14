@@ -106,10 +106,12 @@
                                                 class="text-secondary text-xs font-weight-bold">{{ optional($izin->tanggal_izin)->format('Y-m-d') ?? $izin->tanggal_izin }}</span>
                                         </td>
                                         <td class="align-middle" title="{{ optional($izin->user)->name ?? $izin->nama ?? '' }}">
-                                            
-                                            <p class="text-xs text-primary font-weight-bold mb-0">{{ optional($izin->user)->name ?? $izin->nama ?? '-' }}
+
+                                            <p class="text-xs text-primary font-weight-bold mb-0">
+                                                {{ optional($izin->user)->name ?? $izin->nama ?? '-' }}
                                             </p>
-                                                <p class="text-xs text-secondary mb-0"> Pengganti: {{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-'}}
+                                            <p class="text-xs text-secondary mb-0"> Pengganti:
+                                                {{ optional($izin->guru_pengganti)->name ?? $izin->nama ?? '-'}}
                                             </p>
                                         </td>
                                         <td>
@@ -128,22 +130,22 @@
                                         </td>
 
                                         <!-- <td>
-                                                                                            <p class="text-xs text-secondary mb-0">
-                                                                                                {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
-                                                                                            </p>
+                                                                                                            <p class="text-xs text-secondary mb-0">
+                                                                                                                {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                                                                                                            </p>
 
-                                                                                        </td> -->
+                                                                                                        </td> -->
                                         <!-- <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
-                                                                                            <span class="text-secondary text-xs font-weight-bold">
-                                                                                                {{ $izin->keterangan }}
-                                                                                            </span>
-                                                                                        </td> -->
+                                                                                                            <span class="text-secondary text-xs font-weight-bold">
+                                                                                                                {{ $izin->keterangan }}
+                                                                                                            </span>
+                                                                                                        </td> -->
                                         <td class="align-middle" style="width:200px; white-space:normal; word-wrap:break-word;">
                                             <span class="text-secondary text-xs font-weight-bold">
                                                 {{ optional($izin->mataPelajaran)->name ?? $izin->nama ?? '-' }}
                                             </span>
                                         </td>
-                                        
+
 
 
 
@@ -174,8 +176,8 @@
                                         </td>
 
                                         <td class="align-middle text-sm">
-                                            @if($izin->status_id == 1)
-                                                <div class="d-flex align-items-center gap-1">
+                                            <div class="d-flex align-items-center gap-1">
+                                                @if($izin->status_id == 1)
                                                     {{-- Form for Approval (status_id = 3) --}}
                                                     <form
                                                         action="{{ route('izin-siswa.update_status', ['izinSiswa' => $izin->id, 'statusId' => 3]) }}"
@@ -183,7 +185,7 @@
                                                         @csrf
                                                         <!-- Approve Button -->
                                                         <button type="button"
-                                                            class="btn btn-sm btn-success d-flex align-items-center justify-content-center m-0"
+                                                            class="btn btn-sm btn-success d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
                                                             style="width:34px; height:24px;" data-bs-toggle="modal"
                                                             data-bs-target="#confirmApprove{{ $izin->id }}">
                                                             <i class="fa-solid fa-check"></i>
@@ -196,20 +198,25 @@
                                                         method="POST">
                                                         @csrf
                                                         <button type="button"
-                                                            class="btn btn-sm btn-danger d-flex align-items-center justify-content-center m-0"
+                                                            class="btn btn-sm btn-danger d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
                                                             style="width:34px; height:24px;" data-bs-toggle="modal"
                                                             data-bs-target="#confirmReject{{ $izin->id }}">
                                                             <i class="fa-solid fa-xmark"></i>
                                                         </button>
                                                     </form>
-                                                </div>
-                                            @else
-                                                <span class="align-middle">-</span>
-                                            @endif
+                                                @else
+
+                                                @endif
+                                                <a href="{{ route('izin-guru.show', $izin->id) }}"
+                                                    class="btn btn-info btn-sm d-flex align-items-center justify-content-center m-0 p-0 flex-shrink-0"
+                                                    style="width:34px; height:24px;" title="Lihat Detail">
+                                                    <i class="fas fa-info"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                         <!-- <td class="text-sm">
-                                                                                                              <a href="" class="text-primary">Lihat Detail</a>
-                                                                                                            </td> -->
+                                                                                                                              <a href="" class="text-primary">Lihat Detail</a>
+                                                                                                                            </td> -->
                                     </tr>
                                 @empty
                                     <tr>

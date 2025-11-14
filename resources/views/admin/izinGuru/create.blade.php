@@ -11,7 +11,7 @@
           <form action="{{ route('izin-guru.store') }}" method="POST">
             @csrf
             <div class="row">
-              <div class="form-group col-lg-2">
+              <div class="form-group col-lg-3">
                 <div class="">
                   <label for="tanggal_izin">Tanggal Izin</label>
                   <div class="input-group">
@@ -21,7 +21,7 @@
                   @error('tanggal_izin') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
               </div>
-              <div class="form-group col-lg-5">
+              <div class="form-group col-lg-3">
                 <label for="user_id">Guru Izin</label>
                 <select class="form-control" id="user_id" name="user_id">
                   <option value="">Pilih Guru yang mengajukan Izin</option>
@@ -33,7 +33,19 @@
                 </select>
                 @error('user_id') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
-              <div id="status_ketidakhadiran-group" class="form-group col-lg-5">
+              <div class="form-group col-lg-3">
+                <label for="guru_pengganti_id">Guru Pengganti</label>
+                <select class="form-control" id="guru_pengganti_id" name="guru_pengganti_id">
+                  <option value="">Pilih Guru Pengganti</option>
+                  @foreach($guru as $g)
+                    <option value="{{ $g->id }}" {{ old('guru_pengganti_id') == $g->id ? 'selected' : '' }}>
+                      {{ $g->nama_guru ?? $g->name ?? $g->guru_pengganti ?? 'Guru Pengganti ' . $g->id }}
+                    </option>
+                  @endforeach
+                </select>
+                @error('guru_pengganti_id') <div class="text-danger small">{{ $message }}</div> @enderror
+              </div>
+              <div id="status_ketidakhadiran-group" class="form-group col-lg-3">
                 <label for="status_ketidakhadiran">Status Ketidakhadiran</label>
                 <select class="form-control" id="status_ketidakhadiran" name="status_ketidakhadiran">
                   <option value="">Pilih status ketidakhadiran</option>
@@ -103,23 +115,12 @@
               </div>
             </div>
             <div class="row">
-              <div class="form-group col-lg-3">
-                <label for="guru_pengganti_id">Guru Pengganti</label>
-                <select class="form-control" id="guru_pengganti_id" name="guru_pengganti_id">
-                  <option value="">Pilih Guru Pengganti</option>
-                  @foreach($guru as $g)
-                    <option value="{{ $g->id }}" {{ old('guru_pengganti_id') == $g->id ? 'selected' : '' }}>
-                      {{ $g->nama_guru ?? $g->name ?? $g->guru_pengganti ?? 'Guru Pengganti ' . $g->id }}
-                    </option>
-                  @endforeach
-                </select>
-                @error('guru_pengganti_id') <div class="text-danger small">{{ $message }}</div> @enderror
-              </div>
+              
 
-              <div class="form-group col-lg-9">
-                <label for="bentuk_tugas">Bentuk Penugasan</label>
+              <div class="form-group">
+                <label for="bentuk_tugas">Detail Penugasan</label>
                 <textarea name="bentuk_tugas" class="form-control" id="bentuk_tugas"
-                  rows="1">{{ old('bentuk_tugas') }}</textarea>
+                  rows="2">{{ old('bentuk_tugas') }}</textarea>
                 @error('bentuk_tugas') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
             </div>

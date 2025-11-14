@@ -147,6 +147,16 @@ class IzinGuruController extends Controller
 
         return redirect()->route('guru.izin.index')->with('success', 'Izin guru berhasil ditambahkan.');
     }
+    public function show(IzinGuru $izinGuru)
+    {
+        $izinGuru->load(['user', 'kelas', 'adminPiket', 'mataPelajaran', 'statusIzinGuru','guru_pengganti']);
+        return view('admin.izinGuru.show', compact('izinGuru'));
+    }
+    public function showByGuru(IzinGuru $izinGuru)
+    {
+        $izinGuru->load(['user', 'kelas', 'adminPiket', 'mataPelajaran', 'statusIzinGuru','guru_pengganti']);
+        return view('guru.izin.show', compact('izinGuru'));
+    }
     public function update(Request $request, IzinGuru $izinGuru, $statusId)
     {
         // Ensure the status ID is one of the allowed values (3 or 4)
