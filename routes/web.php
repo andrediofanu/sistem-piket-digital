@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::prefix('admin-piket')->group(function () {
+    Route::middleware(['isAdminPiket'])->prefix('admin-piket')->group(function () {
         Route::get('/izin-guru', [IzinGuruController::class, 'index'])->name('izin-guru.index');
         Route::get('/izin-guru/create', [IzinGuruController::class, 'create'])->name('izin-guru.create');
         Route::post('/izin-guru', [IzinGuruController::class, 'store'])->name('izin-guru.store');
@@ -39,17 +39,18 @@ Route::middleware('auth')->group(function () {
       
     });
 
-    Route::prefix('siswa')->group(function () {
+    Route::middleware(['isSiswa'])->prefix('siswa')->group(function () {
         Route::get('/izin', [IzinSiswaController::class, 'indexBySiswa'])->name('siswa.izin.index');
         Route::get('/izin/create', [IzinSiswaController::class, 'createBySiswa'])->name('siswa.izin.create');
         Route::post('/izin', [IzinSiswaController::class, 'storeBySiswa'])->name('siswa.izin.store');
+        Route::get('/izin/{izinSiswa}', [IzinSiswaController::class, 'showBySiswa'])->name('siswa.izin.show');
     });
-    Route::prefix('guru')->group(function () {
+    Route::middleware(['isGuru'])->prefix('guru')->group(function () {
         Route::get('/izin', [IzinGuruController::class, 'indexByGuru'])->name('guru.izin.index');
         Route::get('/izin/create', [IzinGuruController::class, 'createByGuru'])->name('guru.izin.create');
         Route::post('/izin', [IzinGuruController::class, 'storeByGuru'])->name('guru.izin.store');
     });
-    Route::prefix('wali-kelas')->group(function () {
+    Route::middleware(['isWaliKelas'])->prefix('wali-kelas')->group(function () {
         Route::get('/izin', [IzinSiswaController::class, 'indexByWaliKelas'])->name('waliKelas.izin.index');
         Route::post('/izin-siswa/{izinSiswa}/status/{statusId}', [IzinSiswaController::class, 'updateByWaliKelas'])
             ->name('izin-siswaByWaliKelas.update_status');

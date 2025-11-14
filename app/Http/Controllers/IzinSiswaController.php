@@ -44,6 +44,11 @@ class IzinSiswaController extends Controller
         return view('admin.alpha.index', compact('alphas'));
 
     }
+
+    public function showBySiswa(IzinSiswa $izinSiswa)
+    {
+        return view('siswa.izin.show', compact('izinSiswa'));
+    }
     public function create()
     {
         $kelas = Kelas::all();
@@ -72,6 +77,7 @@ class IzinSiswaController extends Controller
             'keterangan' => 'nullable|string',
         ];
 
+
         $validator = Validator::make($request->all(), $rules);
 
         // Conditional rules
@@ -88,6 +94,7 @@ class IzinSiswaController extends Controller
         });
 
         $validated = $validator->validate();
+
 
         // If jenis_izin == 3 (Tidak Masuk Madrasah), set default jam values
         if ((int) $validated['jenis_izin'] === 3) {
@@ -107,6 +114,7 @@ class IzinSiswaController extends Controller
         // Attach wali_kelas_id
         $kelas = Kelas::find($validated['kelas_id']);
 
+
         // 🟡 Add this validation here
         if (!$kelas || !$kelas->wali_kelas_id) {
             return back()
@@ -125,12 +133,14 @@ class IzinSiswaController extends Controller
             'keterangan' => $validated['keterangan'] ?? null,
             'wali_kelas_id' => $kelas->wali_kelas_id,
         ];
+        // dd($data);
 
         // Attach admin piket if logged in user is admin piket
         $current = auth()->user();
         if ($current && $current->isAdminPiket == 1) {
             $data['admin_piket_id'] = $current->id;
         }
+
 
         IzinSiswa::create($data);
 
@@ -213,31 +223,44 @@ class IzinSiswaController extends Controller
             'tanggal_izin' => 'required|date',
             'kelas_id' => 'required|exists:kelas,id',
             'user_id' => 'required|exists:users,id',
-            'jenis_izin' => 'required|in:1,2,3',
+            'jenis_izin' => 'required|in:1,2,3', // 1: Terlambat, 2: Keluar, 3: Tidak Masuk
             'keterangan' => 'nullable|string',
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
-        // Conditional rules
+        // --- Conditional Rules ---
+
+        // Rule for 'Keluar' (jenis_izin == 2): Requires both jam_mulai and jam_selesai, 
+        // and jam_selesai must be greater than jam_mulai.
         $validator->sometimes(['jam_mulai', 'jam_selesai'], 'required|integer|min:1|max:11', function ($input) {
-            return in_array($input->jenis_izin, ['1', '2']);
+            return (string) ($input->jenis_izin ?? '') === '2';
         });
 
         $validator->sometimes('jam_selesai', 'gt:jam_mulai', function ($input) {
-            return in_array($input->jenis_izin, ['1', '2']);
+            return (string) ($input->jenis_izin ?? '') === '2';
         });
 
+        // Rule for 'Terlambat' (jenis_izin == 1): Requires only jam_mulai.
+        $validator->sometimes('jam_mulai', 'required|integer|min:1|max:11', function ($input) {
+            return (string) ($input->jenis_izin ?? '') === '1';
+        });
+
+        // Rule for 'Tidak Masuk Madrasah' (jenis_izin == 3): Requires status_ketidakhadiran.
         $validator->sometimes('status_ketidakhadiran', 'required|in:1,2,3', function ($input) {
             return (string) ($input->jenis_izin ?? '') === '3';
         });
 
         $validated = $validator->validate();
 
-        // If jenis_izin == 3 (Tidak Masuk Madrasah), set default jam values
-        if ((int) $validated['jenis_izin'] === 3) {
+        $jenisIzin = (int) $validated['jenis_izin'];
+
+        // --- Data Preparation and Overrides ---
+
+        // 1. Set default jam values if jenis_izin is 3 (Tidak Masuk Madrasah)
+        if ($jenisIzin === 3) {
             $validated['jam_mulai'] = 1;
-            $validated['jam_selesai'] = 12;
+            $validated['jam_selesai'] = 12; // Full day
         }
 
         // Safely get status_ketidakhadiran
@@ -245,18 +268,23 @@ class IzinSiswaController extends Controller
             ? (int) $validated['status_ketidakhadiran']
             : 0;
 
-        // Safely get jam values (use array_key_exists to avoid undefined index)
+        // Safely get jam values (will be null if not validated/present)
         $jamMulai = array_key_exists('jam_mulai', $validated) ? (int) $validated['jam_mulai'] : null;
         $jamSelesai = array_key_exists('jam_selesai', $validated) ? (int) $validated['jam_selesai'] : null;
+
+        // 2. IMPORTANT: If jenis_izin is 1 (Terlambat), set jam_selesai to 11 to satisfy NOT NULL constraint
+        if ($jenisIzin === 1) {
+            $jamSelesai = 11;
+        }
 
         $data = [
             'tanggal_izin' => $validated['tanggal_izin'],
             'kelas_id' => $validated['kelas_id'],
             'user_id' => $validated['user_id'],
-            'jenis_izin' => (int) $validated['jenis_izin'],
+            'jenis_izin' => $jenisIzin,
             'status_ketidakhadiran' => $statusKet,
             'jam_mulai' => $jamMulai,
-            'jam_selesai' => $jamSelesai,
+            'jam_selesai' => $jamSelesai, // This is guaranteed non-null for 1 and 3, and validated for 2
             'keterangan' => $validated['keterangan'] ?? null,
         ];
 
@@ -284,6 +312,7 @@ class IzinSiswaController extends Controller
         }
 
         $izinSiswa->status_id = (int) $statusId;
+        $izinSiswa->admin_piket_id = auth()->user()->id;
         $izinSiswa->save();
 
         $action = ((int) $statusId === 3) ? 'disetujui' : 'ditolak';

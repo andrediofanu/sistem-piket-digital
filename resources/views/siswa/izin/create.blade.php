@@ -64,6 +64,17 @@
                 </select>
                 @error('jam_selesai') <div class="text-danger small">{{ $message }}</div> @enderror
               </div>
+              <div id="jam_terlambat" class="form-group col-lg-4">
+                <label for="jam_mulai">Masuk jam KBM ke-</label>
+                <select name="jam_mulai" class="form-control" id="jam_mulai">
+                  <option value="">Pilih</option>
+                  @for($i = 1; $i <= 11; $i++)
+                    <option value="{{ $i }}" {{ old('jam_mulai') == (string) $i ? 'selected' : '' }}>{{ $i }}</option>
+                  @endfor
+                </select>
+                @error('jam_mulai') <div class="text-danger small">{{ $message }}</div> @enderror
+              </div>
+              
 
 
             </div>
@@ -112,79 +123,69 @@
             document.addEventListener('DOMContentLoaded', function () {
               const jenis = document.getElementById('jenis_izin');
               const statusGroup = document.getElementById('status_ketidakhadiran-group');
-              // New element constants
+
+              // Original Jam Groups (used for value '2')
               const jamGroup1 = document.getElementById('jam_mulai_group');
               const jamGroup2 = document.getElementById('jam_selesai_group');
 
+              // New Group for value '1'
+              const jamTerlambat = document.getElementById('jam_terlambat'); // 👈 NEW ELEMENT
+
               function toggleStatus() {
                 // 1. Safety check for all elements
-                if (!jenis || !statusGroup || !jamGroup1 || !jamGroup2) return;
+                if (!jenis || !statusGroup || !jamGroup1 || !jamGroup2 || !jamTerlambat) return;
 
                 const jenisValue = jenis.value;
 
-                // --- 2. Logic for 'status_ketidakhadiran-group' ---
-                // The status group is shown ONLY if the value is '3'.
+                // --- 2. Logic for 'status_ketidakhadiran-group' (Value '3') ---
                 if (jenisValue === '3') {
                   statusGroup.classList.remove('d-none');
-                } else {
-                  statusGroup.classList.add('d-none');
-                  // Clear values when hiding the group
-                  statusGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
-                }
 
-                // --- 3. Logic for 'jam_mulai_group' and 'jam_selesai_group' ---
-                // The jam groups are shown if the value is '1' OR '2'.
-                const shouldShowJamGroups = (jenisValue === '1' || jenisValue === '2');
-
-                if (shouldShowJamGroups) {
-                  jamGroup1.classList.remove('d-none');
-                  jamGroup2.classList.remove('d-none');
-                } else {
+                  // Hide all Jam groups
+                  jamTerlambat.classList.add('d-none');
                   jamGroup1.classList.add('d-none');
                   jamGroup2.classList.add('d-none');
-                  // Optional: Clear values when hiding the groups
-                  jamGroup1.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
-                  jamGroup2.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+
+                } else {
+                  statusGroup.classList.add('d-none');
+                  statusGroup.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+
+                  // --- 3. Logic for Jam Groups (Values '1' and '2') ---
+                  if (jenisValue === '1') {
+                    // Show Jam Terlambat ONLY
+                    jamTerlambat.classList.remove('d-none');
+
+                    // Hide the other two jam groups
+                    jamGroup1.classList.add('d-none');
+                    jamGroup2.classList.add('d-none');
+                    jamGroup1.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                    jamGroup2.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+
+                  } else if (jenisValue === '2') {
+                    // Show Jam Mulai and Jam Selesai ONLY
+                    jamGroup1.classList.remove('d-none');
+                    jamGroup2.classList.remove('d-none');
+
+                    // Hide Jam Terlambat
+                    jamTerlambat.classList.add('d-none');
+                    jamTerlambat.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+
+                  } else {
+                    // Hide all Jam Groups when value is '0', '4', etc.
+                    jamTerlambat.classList.add('d-none');
+                    jamGroup1.classList.add('d-none');
+                    jamGroup2.classList.add('d-none');
+                    jamTerlambat.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                    jamGroup1.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                    jamGroup2.querySelectorAll('select, input, textarea').forEach(el => el.value = '');
+                  }
                 }
               }
 
               if (jenis) {
                 jenis.addEventListener('change', toggleStatus);
-                toggleStatus();
+                toggleStatus(); // Run on initial load
               }
-            });
-          </script>
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              const kelasSelect = document.getElementById('kelas_id');
-              const siswaSelect = document.getElementById('user_id');
-
-              if (!kelasSelect || !siswaSelect) return;
-
-              kelasSelect.addEventListener('change', function () {
-                const kelasId = this.value;
-                siswaSelect.innerHTML = '<option value="">Memuat...</option>';
-
-                if (kelasId) {
-                  fetch(`/get-siswa-by-kelas/${kelasId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                      siswaSelect.innerHTML = '<option value="">Pilih siswa</option>';
-                      data.forEach(siswa => {
-                        const option = document.createElement('option');
-                        option.value = siswa.id;
-                        option.textContent = siswa.name;
-                        siswaSelect.appendChild(option);
-                      });
-                    })
-                    .catch(error => {
-                      console.error(error);
-                      siswaSelect.innerHTML = '<option value="">Gagal memuat siswa</option>';
-                    });
-                } else {
-                  siswaSelect.innerHTML = '<option value="">Pilih siswa</option>';
-                }
-              });
             });
           </script>
 

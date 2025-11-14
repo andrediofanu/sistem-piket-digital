@@ -75,7 +75,7 @@
                   <!-- <th style="width:140px">Wali Kelas</th> -->
                   <!-- <th style="width:140px">Dibuat</th> -->
                   <th style="width:200px" class="p-2">Status Izin</th>
-                  <!-- <th style="width:60px" class="p-2">Detail</th> -->
+                  <th style="width:60px" class="p-2">Detail</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,14 +115,16 @@
                     <td>
                       <p class="text-xs font-weight-bold mb-0"
                         title="{{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}">
-                        {{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}</p>
+                        {{ $jenisMap[$izin->jenis_izin] ?? $izin->jenis_izin }}
+                      </p>
                       @if ($izin->jenis_izin == 1 || $izin->jenis_izin == 2)
                         <p class="text-xs text-secondary mb-0"> Jam ke: {{ $izin->jam_mulai }} -
                           {{ $izin->jam_sampai ?? $izin->jam_selesai ?? '-' }}
                         </p>
                       @elseif($izin->jenis_izin == 3)
                         <p class="text-xs text-secondary mb-0"> Status:
-                          {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}</p>
+                          {{ $statusKetidakharidanMap[$izin->status_ketidakhadiran] ?? '-'}}
+                        </p>
                       @endif
 
                     </td>
@@ -148,10 +150,20 @@
                         <span class="badge badge-sm bg-gradient-secondary">{{ $izin->statusIzinSiswa->name ?? '-' }}</span>
                       @endif
                     </td>
-                    
+                    </td>
+                    <td class="align-middle text-center">
+                     
+                      <a href="{{ route('siswa.izin.show', $izin->id) }}" class="btn btn-info btn-sm d-flex align-items-center justify-content-center m-0"
+                              style="width:34px; height:24px;"
+                        title="Lihat Detail">
+                        <i class="fas fa-info"></i>
+                      </a>
+
+                    </td>
+
                     <!-- <td class="text-sm">
-                          <a href="" class="text-primary">Lihat Detail</a>
-                        </td> -->
+                              <a href="" class="text-primary">Lihat Detail</a>
+                            </td> -->
                   </tr>
                 @empty
                   <tr>

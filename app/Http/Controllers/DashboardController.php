@@ -52,9 +52,7 @@ class DashboardController extends Controller
             DB::raw('DATE(tanggal_izin) as tanggal_izin_date'),
             DB::raw('COUNT(*) as request_count')
         )
-            // Filter by status 3 as per your logic
             ->where('status_id', 3)
-            // Group by the extracted date part
             ->groupBy(DB::raw('DATE(tanggal_izin)'))
             ->get();
 
