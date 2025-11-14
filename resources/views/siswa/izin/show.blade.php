@@ -14,7 +14,7 @@
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="p-4">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="col-12 text-center mb-2">
                                     <div class="card p-3">
                                         <h5 class="mb-3 text-primary">QR Code Izin Siswa</h5>
@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <h5 class="mb-3 text-primary">Informasi Siswa</h5>
                                 <dl class="row mb-4 detail-list">
                                     <dt class="col-sm-4 text-muted">Nama Siswa</dt>
@@ -96,7 +96,7 @@
                                 </dl>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <h5 class="mb-3 text-primary">Detail Izin</h5>
                                 <dl class="row mb-4 detail-list">
                                     <dt class="col-sm-4 text-muted">Tanggal Izin</dt>

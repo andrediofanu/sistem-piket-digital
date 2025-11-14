@@ -101,7 +101,7 @@
                         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Admin Piket</h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('izin-guru.index', 'izin-guru.create') ? 'active bg-white shadow-soft-xs' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('izin-guru.index', 'izin-guru.create', 'izin-guru.show') ? 'active bg-white shadow-soft-xs' : '' }}"
                             href="{{ route('izin-guru.index') }}">
 
                             <div
@@ -133,7 +133,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('izin-siswa.index', 'izin-siswa.create') ? 'active bg-white shadow-soft-xs' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('izin-siswa.index', 'izin-siswa.create', 'izin-siswa.show') ? 'active bg-white shadow-soft-xs' : '' }}"
                             href="{{ route('izin-siswa.index') }}">
                             <div
                                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -223,11 +223,11 @@
                     </li>
                 @endif
                 @if ($role == 2)
-                <li class="nav-item mt-3">
+                    <li class="nav-item mt-3">
                         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Guru</h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('guru.izin.index', 'guru.izin.create') ? 'active bg-white shadow-soft-xs' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('guru.izin.index', 'guru.izin.create', 'guru.izin.show') ? 'active bg-white shadow-soft-xs' : '' }}"
                             href="{{ route('guru.izin.index') }}">
 
                             <div
@@ -261,7 +261,7 @@
                         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Siswa</h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('siswa.izin.index', 'siswa.izin.create') ? 'active bg-white shadow-soft-xs' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('siswa.izin.index', 'siswa.izin.create', 'siswa.izin.show') ? 'active bg-white shadow-soft-xs' : '' }}"
                             href="{{ route('siswa.izin.index') }}">
 
                             <div
@@ -476,13 +476,76 @@
             navbar-scroll="true">
             <div class="container-fluid py-1 px-3">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a>
-                        </li>
-                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
-                    </ol>
-                    <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+                    <?php
+// Dapatkan path URI saat ini (e.g., admin-piket/izin-guru/create)
+$path = Request::path();
+// Pecah path menjadi segmen (admin-piket, izin-guru, create)
+$segments = explode('/', $path);
 
+// Buat breadcrumb
+$breadcrumbHtml = '<ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">';
+
+// Tambahkan tautan Home/Dashboard
+$breadcrumbHtml .= '<li class="breadcrumb-item text-sm">';
+$breadcrumbHtml .= '<a class="opacity-5 text-dark" href="' . route('dashboard') . '">Dashboard</a>';
+$breadcrumbHtml .= '</li>';
+
+$url = '';
+$currentPage = '';
+
+// Loop melalui setiap segmen path
+foreach ($segments as $index => $segment) {
+    // Abaikan segmen kosong
+    if (empty($segment) || $segment === 'dashboard')
+        continue;
+
+    // Format segmen: ganti underscore/strip dengan spasi, lalu buat Title Case
+    $formattedSegment = ucwords(str_replace(['-', '_'], ' ', $segment));
+
+    // Tambahkan segmen ke URL kumulatif
+    $url .= '/' . $segment;
+
+    // Cek apakah ini segmen terakhir (halaman saat ini)
+    $isLast = ($index === count($segments) - 1);
+
+    // Buat elemen <li>
+    $breadcrumbHtml .= '<li class="breadcrumb-item text-sm';
+    $breadcrumbHtml .= $isLast ? ' text-dark active" aria-current="page' : '';
+    $breadcrumbHtml .= '">';
+
+    if (!$isLast) {
+        // Jika bukan segmen terakhir, berikan tautan
+        // Gunakan route() jika segmen merupakan nama route, atau URL biasa
+
+        // Cek apakah rute untuk segmen ini ada (misalnya: 'izin-guru.index')
+        $routeName = implode('.', array_slice($segments, 0, $index + 1));
+
+        // Tautkan kembali ke route index jika memungkinkan (e.g., admin-piket/izin-guru)
+        if (Route::has($routeName . '.index')) {
+            $breadcrumbHtml .= '<a class="opacity-5 text-dark" href="' . route($routeName . '.index') . '">' . $formattedSegment . '</a>';
+        } else {
+            $breadcrumbHtml .= '<a class="opacity-5 text-dark" href="' . url($url) . '">' . $formattedSegment . '</a>';
+        }
+
+    } else {
+        // Jika segmen terakhir, tampilkan sebagai teks aktif
+        $breadcrumbHtml .= $formattedSegment;
+        $currentPage = $formattedSegment;
+    }
+
+    $breadcrumbHtml .= '</li>';
+}
+
+$breadcrumbHtml .= '</ol>';
+
+// Tampilkan HTML Breadcrumb
+echo $breadcrumbHtml;
+            ?>
+
+                    {{-- Judul Halaman Utama (mengambil dari segmen terakhir) --}}
+                    <h6 class="font-weight-bolder mb-0">
+                        <?php echo $currentPage ?: 'Dashboard'; ?>
+                    </h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                     <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -491,6 +554,15 @@
                                     aria-hidden="true"></i></span>
                             <input type="text" class="form-control" placeholder="Type here...">
                         </div> -->
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                    <i class="sidenav-toggler-line"></i>
+                                </div>
+                            </a>
+                        </li>
                     </div>
                     <ul class="navbar-nav  justify-content-end">
                         <!-- <li class="nav-item d-flex align-items-center">
@@ -525,9 +597,11 @@
                             <a href="{{ route('profile.edit') }}">
 
                                 <button type="button" class="btn btn-secondary btn-sm mb-0 me-3">
-                                    <span class="d-sm-inline d-none font-weight-bolder">{{ auth()->user()->name }}</span>
+                                    <span
+                                        class="d-sm-inline d-none font-weight-bolder">{{ auth()->user()->name }}</span>
                                     <span class="mx-1">•</span>
-                                    <span class="d-sm-inline d-none font-weight-normal">{{ implode(' | ', $roles) }}</span>
+                                    <span
+                                        class="d-sm-inline d-none font-weight-normal">{{ implode(' | ', $roles) }}</span>
                                 </button>
                             </a>
                         </li>
